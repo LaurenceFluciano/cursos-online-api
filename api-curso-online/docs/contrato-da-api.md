@@ -16,27 +16,34 @@
 
 Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa: as da API simples e as que as regras de negócio usam.
 
-### Livros *(exemplo)*
+### Cursos
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| `GET` | `/livros` | Lista os livros | Nenhuma | lista de `LivroResponseDTO` | `200` | Nenhum | sim |
-| `GET` | `/livros/{id}` | Busca um livro | Nenhuma | `LivroResponseDTO` | `200` | `404` | sim |
-| `POST` | `/livros` | Cadastra um livro | `LivroRequestDTO` | `LivroResponseDTO` | `201` | `400` | sim |
-| `PUT` | `/livros/{id}` | Atualiza um livro | `LivroRequestDTO` | `LivroResponseDTO` | `200` | `400`, `404` | não |
-| `DELETE` | `/livros/{id}` | Remove um livro | Nenhuma | Nenhuma (sem corpo) | `204` | `404` | não |
+| `GET` | `/cursos` | Lista os cursos | Nenhuma | lista de `CursoResponseDTO` | `200` | Nenhum | não |
+| `GET` | `/cursos/{id}` | Busca um cursos | Nenhuma | `CursoResponseDTO` | `200` | `404` | não |
+| `POST` | `/cursos` | Cadastra um cursos | `CursoRequestDTO` | `CursoResponseDTO` | `201` | `400` | não |
+| `PUT` | `/cursos/{id}` | Atualiza um cursos | `CursoRequestDTO` | `CursoResponseDTO` | `200` | `400`, `404` | não |
+| `DELETE` | `/cursos/{id}` | Remove um cursos | Nenhuma | Nenhuma (sem corpo) | `204` | `404` | não |
+| `POST` | `/cursos/{cursoId}/alunos/{alunoId}` | Matricula um aluno em um curso | `MatricularAlunoRequestDTO` | `MatricularAlunoResponseDTO` | `201` | `400` | não |
+| `POST` | `/cursos/{cursoId}/professores/{professorId}` | Matricula um professor para dar aulas no curso | `MatricularProfessorRequestDTO` | `MatricularProfessorResponseDTO` | `201` | `400` | não |
 
-### {{Recurso 2}}
+
+### Alunos
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| ... | ... | ... | ... | ... | ... | ... | não |
+| `POST` | `/alunos` | Matricula um aluno em um curso | `AlunoRequestDTO` | `AlunoResponseDTO` | `201` | `400` | não |
+| `GET` | `/alunos/{id}` | Busca um aluno | Nenhuma | `AlunoResponseDTO` | `200` | Nenhum | não |
+| `GET` | `/alunos/` | Lista os alunos | Nenhuma | lista de `AlunoResponseDTO` | `200` | Nenhum | não |
 
 ### {{Recurso 3}}
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| ... | ... | ... | ... | ... | ... | ... | não |
+| `POST` | `/professores` | Matricula um aluno em um curso | `ProfessorRequestDTO` | `ProfessorResponseDTO` | `201` | `400` | não |
+| `GET` | `/professores/{id}` | Busca um aluno | Nenhuma | `ProfessorResponseDTO` | `200` | Nenhum | não |
+| `GET` | `/professores/` | Lista os alunos | Nenhuma | lista de `ProfessorResponseDTO` | `200` | Nenhum | não |
 
 ### Rotas que não são CRUD
 
@@ -44,8 +51,8 @@ As que nascem das regras de negócio do README. Estas precisam funcionar nesta e
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
-| `POST` *(exemplo)* | `/emprestimos` | Registra um empréstimo e tira o livro da estante | R1 e R2 | `201` | `400`, `404` |
-| `PUT` *(exemplo)* | `/emprestimos/{id}/devolver` | Registra a devolução e libera o livro | R3 | `200` | `400`, `404` |
+| `POST` | `/cursos/{cursoId}/alunos/{alunoId}` | Matricula um aluno em um curso | R1, R2 e R3 | `201` | `400` |
+| `POST` | `/cursos/{cursoId}/professores/{professorId}` | Matricula um professor para dar aulas no curso | R4 | `201` | `400` | 
 | ... | ... | ... | ... | ... | ... |
 
 ## DTOs
@@ -54,8 +61,8 @@ O que entra não é igual ao que sai: o cliente não envia `id` nem campos que a
 
 | DTO | Direção | Campos | Validações |
 |---|---|---|---|
-| `LivroRequestDTO` *(exemplo)* | entrada | `titulo`, `isbn` | os dois obrigatórios (`@NotBlank`) |
-| `LivroResponseDTO` *(exemplo)* | saída | `id`, `titulo`, `isbn`, `disponivel` | Nenhuma |
+| `CursoRequestDTO` *(exemplo)* | entrada | `titulo`, `isbn` | os dois obrigatórios (`@NotBlank`) |
+| `CursoResponseDTO` *(exemplo)* | saída | `id`, `titulo`, `isbn`, `disponivel` | Nenhuma |
 | ... | ... | ... | ... |
 
 ## Exemplos

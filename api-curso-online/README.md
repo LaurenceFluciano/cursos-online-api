@@ -1,4 +1,4 @@
-# {{Nome do Projeto}}
+# API Cursos Online
 
 > **Este é o ponto de partida do projeto do grupo.** Apague este bloco antes de entregar.
 >
@@ -6,9 +6,6 @@
 >
 > **O que fazer, na ordem:**
 >
-> 1. Copie esta pasta inteira para fora do repositório da disciplina, com o nome do projeto, e publique no GitHub. Os comandos estão no enunciado (seção "Como começar pelo template").
-> 2. Procure por `TROQUE` no projeto (`pom.xml`, `docker-compose.yml`, `OpenApiConfig.java`) e coloque o nome do projeto.
-> 3. Preencha a seção [O problema](#o-problema) deste README: o problema que o grupo criou e as regras de negócio.
 > 4. Preencha `docs/modelo-de-dominio.md` e `docs/contrato-da-api.md`.
 > 5. Crie as tabelas e as classes de todas as entidades. O passo a passo está em [src/main/java/api/README.md](src/main/java/api/README.md).
 > 6. Faça a API simples e implemente as regras de negócio.
@@ -45,26 +42,27 @@ Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1
 
 ## O problema
 
-**Tema sorteado:** Educação e Aprendizagem 
+**Tema sorteado:** Educação e Aprendizagem
 
-{{Em 3 a 5 linhas: o problema que o grupo criou dentro do tema, quem sofre com ele hoje e o que o sistema muda.}}
+Esse software resolve o problema de permitir que a instituição diminui seus gastos, aumente o número de alunos e aumenta seu reconhecimento na região.
+No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando longe. Principalmente aqueles que moram em regiões como ribeirinho de amazonas desde que tenham acesso a internet.
 
 **Quem usa o sistema:**
 
 | Quem | O que faz no sistema |
-|---|---|
-| Bibliotecário *(exemplo)* | Cadastra livros e leitores, registra empréstimos e devoluções |
-| ... | ... |
+| Alunos | Se matricula em cursos online para estudar. |
+| Coordenadores da Instituição de Ensino | Gerencia os cursos e as matriculas. |
 
 **Regras de negócio.** No mínimo 3, criadas pelo grupo a partir do problema: o que o sistema precisa garantir ou impedir. Precisam atender à necessidade do tema e estar implementadas no código. O que só confere formato (campo obrigatório, número positivo) é validação do DTO, não regra de negócio.
 
 | # | Regra | Onde está no código | Rota que usa |
 |---|---|---|---|
-| R1 *(exemplo)* | Um leitor não pode ter mais de 3 empréstimos em aberto | `EmprestimoService` | `POST /emprestimos` |
-| R2 | ... | ... | ... |
-| R3 | ... | ... | ... |
+| R1 | Um aluno não pode se matricular em um curso que já esta cursando.  | CursosService | POST /cursos/{id}/alunos/{id} |
+| R2 | Um aluno não pode se matricular em um curso cujo período (matutino, vespertino, noturno e integral) já tenha uma matricula ativa. | CursosService | POST /cursos/{id}/alunos/{id} |
+| R3 | Um aluno não pode se matricular em um curso qual o número de vagas esta cheio | CursosService | POST /cursos/{id}/alunos/{id} |
+| R4 | Um professor não pode ser aluno da turma que esta dando aula | CursosService | POST /cursos/{id}/professores/{id} |
 
-**Fora do escopo:** {{o que o grupo decidiu não fazer, para o projeto caber no semestre}}
+**Fora do escopo:** Ele não será um SaaS que abrange diversas instuitições diferentes. Será uma solução para apenas uma instituição.
 
 ## Tecnologias
 
@@ -89,11 +87,10 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 ## Entidades
 
-| Entidade | O que representa                    | Como se relaciona                        |
-|----------|-------------------------------------|------------------------------------------|
-| Aluno    | Um estudante que deseja cursar algo | Pode se matricular em vários cursos      |
-| Curso    | Um curso especifico                 | Pode ter vários alunos e várias matérias |
-| ...      | ...                                 | ...                                      |
+| Entidade | O que representa | Como se relaciona |
+|---|---|---|
+| Livro *(exemplo)* | Um exemplar do acervo que pode ser emprestado | Aparece em vários empréstimos |
+| ... | ... | ... |
 
 Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](docs/modelo-de-dominio.md).
 
