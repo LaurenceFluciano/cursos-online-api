@@ -89,10 +89,11 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 ## Entidades
 
-| Entidade | O que representa | Como se relaciona |
-|---|---|---|
-| Livro *(exemplo)* | Um exemplar do acervo que pode ser emprestado | Aparece em vários empréstimos |
-| ... | ... | ... |
+| Entidade | O que representa                    | Como se relaciona                        |
+|----------|-------------------------------------|------------------------------------------|
+| Aluno    | Um estudante que deseja cursar algo | Pode se matricular em vários cursos      |
+| Curso    | Um curso especifico                 | Pode ter vários alunos e várias matérias |
+| ...      | ...                                 | ...                                      |
 
 Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](docs/modelo-de-dominio.md).
 
