@@ -17,10 +17,8 @@
         <version>3.5.16</version>
     </parent>
 
-    <!-- TROQUE: identifica o grupo que criou o projeto. -->
-    <groupId>org.example</groupId>
-    <!-- TROQUE: nome do artefato gerado pelo Maven (minúsculo, com hífen). -->
-    <artifactId>projeto-final</artifactId>
+    <groupId>org.online.cursos.api</groupId>
+    <artifactId>api-cursos-online</artifactId>
     <!-- Define a versão atual do projeto. -->
     <version>1.0-SNAPSHOT</version>
 
