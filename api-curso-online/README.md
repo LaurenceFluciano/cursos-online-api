@@ -2,21 +2,16 @@
 
 > **Este é o ponto de partida do projeto do grupo.** Apague este bloco antes de entregar.
 >
-> **Objetivo do exercício:** planejar e organizar um backend antes de programar tudo. O grupo cria o problema e as regras de negócio, desenha o sistema, monta a estrutura de todas as entidades, faz a API funcionar com as regras implementadas e documenta tudo neste README. O enunciado completo está em `Aula 10-11/README.md`, no repositório da disciplina.
->
-> **O que fazer, na ordem:**
->
-> 4. Preencha `docs/modelo-de-dominio.md` e `docs/contrato-da-api.md`.
-> 5. Crie as tabelas e as classes de todas as entidades. O passo a passo está em [src/main/java/api/README.md](src/main/java/api/README.md).
-> 6. Faça a API simples e implemente as regras de negócio.
-> 7. Termine este README: troque tudo o que está entre `{{ }}` e apague o que está marcado com *(exemplo)*. Mantenha as seções e a ordem.
-> 8. Abra o repositório no GitHub, leia o README como quem nunca viu o projeto e preencha `docs/autoavaliacao.md`.
+> **O que falta fazer:**
+> 1. Faça a API simples e implemente as regras de negócio.
+> 2. Termine este README: troque tudo o que está entre `{{ }}` e apague o que está marcado com *(exemplo)*. Mantenha as seções e a ordem.
+> 3. Abra o repositório no GitHub, leia o README como quem nunca viu o projeto e preencha `docs/autoavaliacao.md`.
 >
 > Na primeira vez que a API sobe, antes de existir tabela e rota, o Flyway avisa `No migrations found` e o Swagger UI mostra `No operations defined in spec!`. É o esperado.
 >
 > Os exemplos marcados com *(exemplo)* são de uma biblioteca. O projeto completo dela está em `Aula 10-11/exemplo-biblioteca`.
 
-{{Uma ou duas frases: o que o sistema faz e para quem. Quem nunca viu o projeto tem que entender o que ele é lendo só este parágrafo.}}
+Um sistema em que instituições de ensinos criam cursos onlines e alunos que muito moram longe e tem acesso a internet podem realizar o curso em formato remoto.  
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
 
@@ -82,7 +77,10 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
-| Livro *(exemplo)* | `V1__criar_livros.sql`, pronta | `Livro`, pronta | `LivroRepository`, pronto | `LivroRequestDTO`, `LivroResponseDTO`, prontos | `LivroMapper`, implementado | `LivroService`, implementado | `LivroController`, implementado |
+| Alunos | `V1__criar_alunos.sql`, incompleta | `Aluno`, incompleto | `AlunoRepository`, incompleto | `AlunoRequestDTO`, `AlunoResponseDTO`, incompleto | `AlunoMapper`, incompleto | `AlunoService`, incompleto | `AlunoController`, incompleto |
+| Professores | `V2__criar_professores.sql`, incompleta | `Professor`, incompleto | `ProfessorRepository`, incompleto | `ProfessorRequestDTO`, `ProfessorResponseDTO`, incompleto | `ProfessorMapper`, incompleto | `ProfessorService`, incompleto | `ProfessorController`, incompleto |
+| Cursos | `V3__criar_cursos.sql`, incompleta | `Curso`, incompleto | `CursoRepository`, incompleto | `CursoRequestDTO`, `CursoResponseDTO`, incompleto | `CursoMapper`, incompleto | `CursoService`, incompleto | `CursoController`, incompleto |
+
 | ... | ... | ... | ... | ... | ... | ... | ... |
 
 ## Entidades
