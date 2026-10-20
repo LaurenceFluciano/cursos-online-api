@@ -6,42 +6,63 @@
 
 Uma tabela por entidade. A coluna **Regra** é o que vira `NOT NULL`, `UNIQUE` ou validação no DTO.
 
-### Livro *(exemplo)*
+### Aluno
 
-Um exemplar do acervo que pode ser emprestado.
+Um estudante pode se matricular em vários cursos
 
-| Atributo | Tipo Java | Coluna | Obrigatório | Regra |
-|---|---|---|---|---|
-| `id` | `Long` | `id` | sim | Gerado pelo banco |
-| `titulo` | `String` | `titulo` | sim | Até 255 caracteres |
-| `isbn` | `String` | `isbn` | sim | Até 20 caracteres. Não é único: exemplares do mesmo título repetem o ISBN |
-| `disponivel` | `boolean` | `disponivel` | sim | Nasce `true`; o cliente não controla |
+| Atributo    | Tipo Java | Coluna      | Obrigatório | Regra                           |
+|-------------|-----------|-------------|-------------|---------------------------------|
+| `id`        | `Long`    | `id`        | sim         | Gerado pelo banco               |
+| `cpf`       | `String`  | `cpf`       | sim         | CPF único e válido do estudante |
+| `email`     | `String`  | `email`     | sim         | Único, até 255 caracteres       |
+| `nome`      | `String`  | `nome`      | sim         | Até 255 caracteres              |
+| `matricula` | `String`  | `matricula` | sim         | Gerado no cadastro              |
+| ...         | ...       | ...         | ...         | ...                             |
 
-### {{Entidade 2}}
+### Professor
 
-{{O que ela representa, em uma linha.}}
+Professor de uma ou mais matérias
 
-| Atributo | Tipo Java | Coluna | Obrigatório | Regra |
-|---|---|---|---|---|
-| `id` | `Long` | `id` | sim | Gerado pelo banco |
-| ... | ... | ... | ... | ... |
+| Atributo    | Tipo Java | Coluna      | Obrigatório | Regra                           |
+|-------------|-----------|-------------|-------------|---------------------------------|
+| `id`        | `Long`    | `id`        | sim         | Gerado pelo banco               |
+| `cpf`       | `String`  | `cpf`       | sim         | CPF único e válido do estudante |
+| `email`     | `String`  | `email`     | sim         | Único, até 255 caracteres       |
+| `nome`      | `String`  | `nome`      | sim         | Até 255 caracteres              |
+| ...         | ...       | ...         | ...         | ...                             |
 
-### {{Entidade 3}}
+### Curso
 
-{{O que ela representa, em uma linha.}}
+Um curso específico, pertence a uma instituição, pode ter vários alunos
 
-| Atributo | Tipo Java | Coluna | Obrigatório | Regra |
-|---|---|---|---|---|
-| `id` | `Long` | `id` | sim | Gerado pelo banco |
-| ... | ... | ... | ... | ... |
+| Atributo   | Tipo Java | Coluna     | Obrigatório | Regra                                    |
+|------------|-----------|------------|-------------|------------------------------------------|
+| `id`       | `Long`    | `id`       | sim         | Gerado pelo banco                        |
+| `nome`     | `String`  | `nome`     | sim         | Até 255 caracteres                       |
+| `periodo`  | `String`  | `periodo`  | sim         | Deve ser MATUTINO, VESPERTINO ou NOTURNO |
+| `materias` | `String`  | `materias` | sim         | Uma lista de matérias separadas por ,    |
+| ...        | ...       | ...        | ...         | ...                                      |
+
+
+## Matricula
+
+Tabela de relacionamento de Aluno <-> Curso
+
+| Atributo   | Tipo Java | Coluna     | Obrigatório | Regra              |
+|------------|-----------|------------|-------------|--------------------|
+| `id_aluno` | `Long`    | `id_aluno` | sim         | FK para alunos     |
+| `id_curso` | `Long`    | `id_curso` | sim         | FK para cursos     |
+| `ativo`    | `Boolean` | `id`       | sim         | Padrão como `true` |
+| ...        | ...       | ...        | ...         | ...                |
+
 
 ## Relacionamentos
 
-| De | Para | Tipo | No banco | No código |
-|---|---|---|---|---|
-| Emprestimo *(exemplo)* | Leitor | muitos para um | `emprestimos.leitor_id` referencia `leitores(id)` | `@ManyToOne` em `Emprestimo` |
-| Emprestimo *(exemplo)* | Livro | muitos para um | `emprestimos.livro_id` referencia `livros(id)` | `@ManyToOne` em `Emprestimo` |
-| ... | ... | ... | ... | ... |
+| De        | Para  | Tipo           | No banco                                      | No código                   |
+|-----------|-------|----------------|-----------------------------------------------|-----------------------------|
+| Matricula | Aluno | muitos para um | `matriculas.id_aluno` referencia `alunos(id)` | `@ManyToOne` em `Matricula` |
+| Matricula | Curso | muitos para um | `matriculas.id_curso` referencia `cursos(id)` | `@ManyToOne` em `Matricula` |
+| ...       | ...   | ...            | ...                                           | ...                         |
 
 ## Diagrama ER
 
@@ -49,26 +70,37 @@ O GitHub desenha o bloco abaixo sozinho. Troque pelas tabelas do grupo, com os n
 
 ```mermaid
 erDiagram
-    LEITORES ||--o{ EMPRESTIMOS : "faz"
-    LIVROS ||--o{ EMPRESTIMOS : "aparece em"
+    ALUNOS ||--o{ MATRICULAS : "possui"
+    CURSOS ||--o{ MATRICULAS : "recebe"
+    PROFESSORES }o--o{ CURSOS : "leciona"
 
-    LEITORES {
+    ALUNOS {
+        bigint id PK
+        varchar cpf UK
+        varchar email UK
+        varchar nome
+        varchar matricula UK
+    }
+
+    PROFESSORES {
+        bigint id PK
+        varchar cpf UK
+        varchar email UK
+        varchar nome
+    }
+
+    CURSOS {
         bigint id PK
         varchar nome
-        varchar email
+        varchar periodo
+        varchar materias
     }
-    LIVROS {
+
+    MATRICULAS {
         bigint id PK
-        varchar titulo
-        varchar isbn
-        boolean disponivel
-    }
-    EMPRESTIMOS {
-        bigint id PK
-        bigint leitor_id FK
-        bigint livro_id FK
-        date data_retirada
-        date data_devolucao
+        bigint id_aluno FK
+        bigint id_curso FK
+        boolean ativo
     }
 ```
 
@@ -78,8 +110,8 @@ Como ler: `||--o{` é "um para muitos". Um leitor faz zero ou vários empréstim
 
 Todas existem em `src/main/resources/db/migration`, uma tabela por arquivo. A ordem importa: a tabela referenciada nasce antes da que referencia.
 
-| Versão | Arquivo | O que cria |
-|---|---|---|
-| V1 *(exemplo)* | `V1__criar_livros.sql` | Tabela `livros` |
-| V2 *(exemplo)* | `V2__criar_leitores.sql` | Tabela `leitores` |
+| Versão         | Arquivo                     | O que cria                                            |
+|----------------|-----------------------------|-------------------------------------------------------|
+| V1 *(exemplo)* | `V1__criar_livros.sql`      | Tabela `livros`                                       |
+| V2 *(exemplo)* | `V2__criar_leitores.sql`    | Tabela `leitores`                                     |
 | V3 *(exemplo)* | `V3__criar_emprestimos.sql` | Tabela `emprestimos`, com as duas chaves estrangeiras |
