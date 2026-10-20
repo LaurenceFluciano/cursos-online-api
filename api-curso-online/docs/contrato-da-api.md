@@ -61,22 +61,32 @@ O que entra não é igual ao que sai: o cliente não envia `id` nem campos que a
 
 | DTO | Direção | Campos | Validações |
 |---|---|---|---|
-| `CursoRequestDTO` *(exemplo)* | entrada | `titulo`, `isbn` | os dois obrigatórios (`@NotBlank`) |
-| `CursoResponseDTO` *(exemplo)* | saída | `id`, `titulo`, `isbn`, `disponivel` | Nenhuma |
+| `CursoRequestDTO` *(exemplo)* | entrada | `nome`, `periodo`, lista de `materias` | Todos os campos são obrigatórios obrigatórios (`@NotBlank`) |
+| `CursoResponseDTO` *(exemplo)* | saída | `id`, `nome`, `periodo`, lista de `materias` | Nenhuma |
+| `AlunoRequestDTO` *(exemplo)* | entrada | `cpf`, `nome`, `email`, `matricula` | Todos os campos são obrigatórios (`@NotBlank`) |
+| `AlunoResponseDTO` *(exemplo)* | saída | `id`, `cpf`, `nome`, `email`, `matricula` | Nenhuma |
+| `ProfessorRequestDTO` *(exemplo)* | entrada | `cpf`, `nome`, `email`, `matricula` | Todos os campos são obrigatórios (`@NotBlank`) |
+| `ProfessorResponseDTO` *(exemplo)* | saída | `id`, `cpf`, `nome`, `email`, `matricula` | Nenhuma |
+| `MatricularAlunoRequestDTO` *(exemplo)* | entrada | Nenhuma | Nenhuma |
+| `MatricularAlunoResponseDTO` *(exemplo)* | saída | `idAluno`, `idCurso`, `ativo` | Nenhuma |
+| `MatricularProfessorRequestDTO` *(exemplo)* | entrada | Nenhuma | Nenhuma |
+| `MatricularProfessorResponseDTO` *(exemplo)* | saída | `idProfessor`, `idCurso`, `ativo` | Nenhuma |
+
 | ... | ... | ... | ... |
 
 ## Exemplos
 
 Um par requisição/resposta por entidade.
 
-### `POST /livros` *(exemplo)*
+### `POST /cursos` *(exemplo)*
 
 Requisição:
 
 ```json
 {
-  "titulo": "Dom Casmurro",
-  "isbn": "978-85-359-0277-5"
+  "nome": "Curso de backend",
+  "periodo": "Noturno",
+  "materias": ["Backend"]
 }
 ```
 
@@ -85,28 +95,28 @@ Resposta, `201 Created`:
 ```json
 {
   "id": 1,
-  "titulo": "Dom Casmurro",
-  "isbn": "978-85-359-0277-5",
-  "disponivel": true
+  "titulo": "Curso de backend",
+  "periodo": "Noturno",
+  "materias": ["Backend"]
 }
 ```
 
 ## Erros
 
-Todo erro sai no mesmo formato. Este é o `404` de `GET /livros/999`:
+Todo erro sai no mesmo formato. Este é o `404` de `GET /cursos/999`:
 
 ```json
 {
   "status": 404,
   "erro": "Not Found",
-  "mensagem": "Livro não encontrado: 999",
-  "caminho": "/livros/999",
+  "mensagem": "Cursos não encontrado: 999",
+  "caminho": "/cursos/999",
   "timestamp": "2026-10-06T19:30:00",
   "campos": []
 }
 ```
 
-No `400` de validação, a lista `campos` traz um item por campo inválido: `{"campo": "titulo", "mensagem": "Título é obrigatório"}`.
+No `400` de validação, a lista `campos` traz um item por campo inválido: `{"campo": "nome", "mensagem": "Nome é obrigatório"}`.
 
 | Status | Quando acontece neste projeto |
 |---|---|
