@@ -39,12 +39,15 @@ Um curso específico, pertence a uma instituição, pode ter vários alunos
 |------------|-----------|------------|-------------|------------------------------------------|
 | `id`       | `Long`    | `id`       | sim         | Gerado pelo banco                        |
 | `nome`     | `String`  | `nome`     | sim         | Até 255 caracteres                       |
-| `periodo`  | `String`  | `periodo`  | sim         | Deve ser MATUTINO, VESPERTINO ou NOTURNO |
 | `materias` | `String`  | `materias` | sim         | Uma lista de matérias separadas por ,    |
+| `status`  | `String`  | `status`  | sim   | Pode ser `Ativo`, `Em planejamento`, `Inativo`   |
+| `numeroVagas`  | `Int`  | `numero_vagas`  | não   | Deve ser um número maior que >0          |
+| `periodo`  | `String`  | `periodo`  | não         | Deve ser MATUTINO, VESPERTINO ou NOTURNO | 
 | ...        | ...       | ...        | ...         | ...                                      |
 
+> TO-DO: "instancia" do curso. Mover status do curso. Considerar status da instancia no futuro
 
-## Matricula
+## Matricula Do Aluno
 
 Tabela de relacionamento de Aluno <-> Curso
 
@@ -52,9 +55,23 @@ Tabela de relacionamento de Aluno <-> Curso
 |------------|-----------|------------|-------------|--------------------|
 | `id_aluno` | `Long`    | `id_aluno` | sim         | FK para alunos     |
 | `id_curso` | `Long`    | `id_curso` | sim         | FK para cursos     |
-| `ativo`    | `Boolean` | `id`       | sim         | Padrão como `true` |
+| `status`    | `String` | `status`       | sim         | Pode ser `Ativo`, `Matriculado`, `Afastado`, `Trancado` e `Concluido` |
 | ...        | ...       | ...        | ...         | ...                |
 
+## Matricula Do Professor
+
+Tabela de relacionamento de Professor <-> Curso
+
+| Atributo   | Tipo Java | Coluna     | Obrigatório | Regra              |
+|------------|-----------|------------|-------------|--------------------|
+| `id` | `Long`    | `id_aluno` | sim         | PK para alunos     |
+| `id_professor` | `Long`    | `id_aluno` | sim         | FK para alunos     |
+| `id_curso` | `Long`    | `id_curso` | sim         | FK para cursos     |
+| `status`    | `String` | `status`       | sim         | Pode ser `Ativo`, `Matriculado`, `Afastado` e `Concluido` |
+| ...        | ...       | ...        | ...         | ...                |
+
+
+> TO-DO: Melhorar o termo `MATRICULADO` do status do professor. Considerar quando ele sair no meio
 
 ## Relacionamentos
 
