@@ -53,10 +53,10 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 
 | # | Regra | Onde está no código | Rota que usa |
 |---|---|---|---|
-| R1 | Um aluno não pode se matricular em um curso que já esta cursando.  | CursosService | POST /cursos/{id}/alunos/{id} |
-| R2 | Um aluno não pode se matricular em um curso cujo período (matutino, vespertino, noturno e integral) já tenha uma matricula ativa. | CursosService | POST /cursos/{id}/alunos/{id} |
-| R3 | Um aluno não pode se matricular em um curso qual o número de vagas esta cheio | CursosService | POST /cursos/{id}/alunos/{id} |
-| R4 | Um professor não pode ser aluno da turma que esta dando aula | CursosService | POST /cursos/{id}/professores/{id} |
+| R1 | Um aluno não pode se matricular em uma turma que já esta cursando.  | TurmaService | POST /turmas/{idTurma}/alunos/{idAluno} |
+| R2 | Um aluno não pode se matricular em uma turma cujo período (matutino, vespertino, noturno e integral) já estaja ocupado por outra turma que ele participa. | TurmaService | POST /turma/{idTurma}/alunos/{idAluno} |
+| R3 | Um aluno não pode se matricular em uma turma em caxo de exceder o número de vagas | TurmaService | POST /turmas/{idTurma}/alunos/{idAluno} |
+| R4 | Um professor não pode ser aluno da turma que esta dando aula | TurmaService | POST /turmas/ |
 
 **Fora do escopo:** Ele não será um SaaS que abrange diversas instuitições diferentes. Será uma solução para apenas uma instituição.
 
@@ -74,6 +74,8 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 
 A API é organizada em camadas. Uma requisição entra pelo Controller, passa pelo Service, que aplica as regras de negócio, e chega ao banco pelo Repository; a resposta faz o caminho de volta. O Mapper converte DTO em entidade e entidade em DTO.
 
+(*deve ser completado apenas no final da implementação da api*)
+
 **Mapa da estrutura.** Uma linha por entidade, todas as do modelo. Em cada célula, a classe e a situação: **pronta**, **implementada** (já tem lógica), **em parte** (só uma parte das rotas) ou **montada** (criada, ligada às outras, ainda sem lógica).
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
@@ -86,16 +88,19 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 ## Entidades
 
+(*deve ser completado apenas no final da implementação da api e documentacao*)
+
 | Entidade | O que representa | Como se relaciona |
 |---|---|---|
-| Livro *(exemplo)* | Um exemplar do acervo que pode ser emprestado | Aparece em vários empréstimos |
-| ... | ... | ... |
+| Pessoa | Uma pessoa da instituição de ensino ou possível cliente potencial | Aparece nas especializações de aluno e professor |
 
 Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](docs/modelo-de-dominio.md).
 
 ## Rotas
 
 ### As que já funcionam
+
+(*deve ser completado apenas no final da implementação da api*)
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
