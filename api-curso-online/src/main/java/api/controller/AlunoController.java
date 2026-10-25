@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 import api.dto.AlunoRequestDTO;
 import api.dto.AlunoResponseDTO;
 import api.service.AlunoService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.RequestBody; 
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -22,7 +24,7 @@ public class AlunoController {
     }
 
     @PostMapping
-    public AlunoResponseDTO cadastrar(@RequestBody AlunoRequestDTO request) {
+    public AlunoResponseDTO cadastrar(@Valid @RequestBody AlunoRequestDTO request) {
         return this.alunoService.cadastrar(request);
     }
     
