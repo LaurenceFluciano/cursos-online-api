@@ -11,7 +11,7 @@
 >
 > Os exemplos marcados com *(exemplo)* são de uma biblioteca. O projeto completo dela está em `Aula 10-11/exemplo-biblioteca`.
 
-Um sistema em que instituições de ensinos criam cursos onlines e alunos que muito moram longe e tem acesso a internet podem realizar o curso em formato remoto.  
+Um sistema para uma instituição de ensino e cursos técnicos criem cursos onlines em que alunos que moram muito longe, caso tenha acesso a internet, podem estudar e realizar o curso a distância.  
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
 
@@ -39,7 +39,7 @@ Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1
 
 **Tema sorteado:** Educação e Aprendizagem
 
-Esse software resolve o problema de permitir que a instituição diminui seus gastos, aumente o número de alunos e aumenta seu reconhecimento na região.
+Esse software resolve o problema de permitir que a instituição de ensino técnico diminui seus gastos, aumente o número de alunos e aumenta seu reconhecimento na região.
 No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando longe. Principalmente aqueles que moram em regiões como ribeirinho de amazonas desde que tenham acesso a internet.
 
 **Quem usa o sistema:**
@@ -47,15 +47,17 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 | Quem | O que faz no sistema |
 | Alunos | Se matricula em cursos online para estudar. |
 | Coordenadores da Instituição de Ensino | Gerencia os cursos e as matriculas. |
+| Professores | Responsáveis por lecionar nas aulas |
 
 **Regras de negócio.** No mínimo 3, criadas pelo grupo a partir do problema: o que o sistema precisa garantir ou impedir. Precisam atender à necessidade do tema e estar implementadas no código. O que só confere formato (campo obrigatório, número positivo) é validação do DTO, não regra de negócio.
 
 | # | Regra | Onde está no código | Rota que usa |
 |---|---|---|---|
-| R1 | Um aluno não pode se matricular em um curso que já esta cursando.  | CursosService | POST /cursos/{id}/alunos/{id} |
-| R2 | Um aluno não pode se matricular em um curso cujo período (matutino, vespertino, noturno e integral) já tenha uma matricula ativa. | CursosService | POST /cursos/{id}/alunos/{id} |
-| R3 | Um aluno não pode se matricular em um curso qual o número de vagas esta cheio | CursosService | POST /cursos/{id}/alunos/{id} |
-| R4 | Um professor não pode ser aluno da turma que esta dando aula | CursosService | POST /cursos/{id}/professores/{id} |
+| R1 | Um aluno não pode se matricular em uma turma que já esta cursando.  | MatriculaService | POST /matriculas |
+| R2 | Um aluno não pode se matricular em uma turma cujo período (matutino, vespertino, noturno e integral) já estaja ocupado por outra turma que ele participa. | MatriculaService | POST /matriculas |
+| R3 | Um aluno não pode se matricular em uma turma em caxo de exceder o número de vagas | MatriculaService | POST /matriculas |
+| R4 | Um professor não pode ser aluno da turma que esta dando aula | MatriculaService | POST /matriculas/ |
+| R5 | Um aluno não pode se matricular em turmas que estão em período de planejamento | MatriculaService | POST /matriculas |
 
 **Fora do escopo:** Ele não será um SaaS que abrange diversas instuitições diferentes. Será uma solução para apenas uma instituição.
 
@@ -73,6 +75,8 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 
 A API é organizada em camadas. Uma requisição entra pelo Controller, passa pelo Service, que aplica as regras de negócio, e chega ao banco pelo Repository; a resposta faz o caminho de volta. O Mapper converte DTO em entidade e entidade em DTO.
 
+(*deve ser completado apenas no final da implementação da api*)
+
 **Mapa da estrutura.** Uma linha por entidade, todas as do modelo. Em cada célula, a classe e a situação: **pronta**, **implementada** (já tem lógica), **em parte** (só uma parte das rotas) ou **montada** (criada, ligada às outras, ainda sem lógica).
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
@@ -85,16 +89,19 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 ## Entidades
 
+(*deve ser completado apenas no final da implementação da api e documentacao*)
+
 | Entidade | O que representa | Como se relaciona |
 |---|---|---|
-| Livro *(exemplo)* | Um exemplar do acervo que pode ser emprestado | Aparece em vários empréstimos |
-| ... | ... | ... |
+| Pessoa | Uma pessoa da instituição de ensino ou possível cliente potencial | Aparece nas especializações de aluno e professor |
 
 Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](docs/modelo-de-dominio.md).
 
 ## Rotas
 
 ### As que já funcionam
+
+(*deve ser completado apenas no final da implementação da api*)
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
