@@ -1,76 +1,57 @@
+package api.model;
 
-@entity
-@table(name = "aluno")
-public class aluno{
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
-    @Id
-    @Generatedvalue(strategy = Generationtype.IDENTITY )
-    private long Id
+@Entity 
+@Table (name = "aluno")
+public class Aluno{
 
-    @Column (name = cpf, nullable = false, unique = true )
-    private String cpf
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
 
-    @Column (name = nome, nullable = false)
-    private String nome
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pessoa")
+    private Pessoa pessoa;
 
-    @Column (name = email, nullable = false, unique = true )
-    private String email
+    @Column (name = "matricula", nullable = false, unique = true )
+    private String matricula;
 
-    @Column (name = matricula, nullable = false, unique = true )
-    private String matricula
-
-    public aluno () {
+    protected Aluno() {
 
     }
 
-    public aluno(String cpf, String nome, String email, String matricula){
-        this.cpf = cpf
-        this.nome = nome
-        this.email = email
-        this.matricula = matricula
+    public Aluno(Pessoa pessoa){
+        this.pessoa = pessoa;
     }
 
-public long getId{
-    return Id:
-}
+    public Long getId() {
+        return Id;
+    }
 
-public long setId(long id){
-    this.id = id;
-}
+    public Pessoa getPessoa() {
+        return this.pessoa;
+    }
 
-public String getCpf{
-    return cpf:
-}
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
 
-public String setCpf(String cpf){
-    this.cpf = cpf;
-}
+    
+    public String getMatricula() {
+        return this.matricula;
+    }
 
-public String getNome{
-    return nome:
-}
-
-public String setNome(String nome){
-    this.nome = nome;
-}
-
-public String getEmail{
-    return email:
-}
-
-public String setEmail(String email){
-    this.email = email;
-}
-
-public String getMatricula{
-    return matriculal:
-}
-
-public String setMatricula(String matricula){
-    this.matricula = matricula;
-}
-
-
-
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
 
 }
