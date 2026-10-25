@@ -11,7 +11,7 @@
 >
 > Os exemplos marcados com *(exemplo)* são de uma biblioteca. O projeto completo dela está em `Aula 10-11/exemplo-biblioteca`.
 
-Um sistema em que instituições de ensinos criam cursos onlines e alunos que muito moram longe e tem acesso a internet podem realizar o curso em formato remoto.  
+Um sistema para uma instituição de ensino e cursos técnicos criem cursos onlines em que alunos que moram muito longe, caso tenha acesso a internet, podem estudar e realizar o curso a distância.  
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
 
@@ -39,7 +39,7 @@ Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1
 
 **Tema sorteado:** Educação e Aprendizagem
 
-Esse software resolve o problema de permitir que a instituição diminui seus gastos, aumente o número de alunos e aumenta seu reconhecimento na região.
+Esse software resolve o problema de permitir que a instituição de ensino técnico diminui seus gastos, aumente o número de alunos e aumenta seu reconhecimento na região.
 No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando longe. Principalmente aqueles que moram em regiões como ribeirinho de amazonas desde que tenham acesso a internet.
 
 **Quem usa o sistema:**
@@ -47,6 +47,7 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 | Quem | O que faz no sistema |
 | Alunos | Se matricula em cursos online para estudar. |
 | Coordenadores da Instituição de Ensino | Gerencia os cursos e as matriculas. |
+| Professores | Responsáveis por lecionar nas aulas |
 
 **Regras de negócio.** No mínimo 3, criadas pelo grupo a partir do problema: o que o sistema precisa garantir ou impedir. Precisam atender à necessidade do tema e estar implementadas no código. O que só confere formato (campo obrigatório, número positivo) é validação do DTO, não regra de negócio.
 
