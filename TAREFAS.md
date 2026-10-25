@@ -49,10 +49,20 @@
 ### A decidir 
 
 
-- [ ] Precisamos de uma operação de consulta que mostre histórico turmas (deve ser páginado) que um aluno ao participou `id_pessoa`. **Observe: consideramos até aquelas que ele já fez**
-- [ ] Precisamos de uma operação de consulta que mostre histórico turmas (deve ser páginado) de um professor lecionou `id_pessoa`. **Observe: consideramos até aquelas que ele já lecionou**
+- [ ] Precisamos de uma operação de consulta que mostre histórico turmas (deve ser páginado) que um aluno ao participou `id_pessoa`.
+- [ ] Precisamos de uma operação de consulta que mostre histórico turmas (deve ser páginado) de um professor lecionou `id_pessoa`.
 - [ ] Precisamos de uma operação que mostre as turmas atuais que um aluno participa
 - [ ] Precisamos de uma operação que mostre as turmas atuais que um professor leciona
+
+### Contratos (DTOs / Requests / Responses)
+
+- [ ] Definir DTOs de Entrada (Requests) de Pessoa, Aluno e Professor.
+- [ ] Definir DTOs de Saída (Responses) de Pessoa, Aluno e Professor.
+- [ ] Definir DTOs de Entrada (Requests) de Cursos, Módulos e Turmas.
+- [ ] Definir DTOs de Saída (Responses) de Cursos, Módulos e Turmas.
+- [ ] Definir DTOs de Entrada (Requests) de Turma e MatriculaAlunoTurma.
+- [ ] Definir DTOs de Saída (Responses) de Turma e MatriculaAlunoTurma.
+
 
 ### Revisões após implementação BackEnd
 
