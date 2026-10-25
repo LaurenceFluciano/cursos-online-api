@@ -18,11 +18,11 @@ Uma tabela por entidade. A coluna **Regra** é o que vira `NOT NULL`, `UNIQUE` o
 
 Um estudante pode se matricular em vários cursos
 
-| Atributo    | Tipo Java | Coluna      | Obrigatório | Regra                           |
-|-------------|-----------|-------------|-------------|---------------------------------|
-| `id`        | `Long`    | `id`        | sim         | Gerado pelo banco               |
-| `pessoa`    | `Pessoa`  | `id_pessoa` | sim         | FK para pessoa                  |
-| `matricula` | `String`  | `matricula` | sim         | Gerado no cadastro              |
+| Atributo    | Tipo Java | Coluna      | Obrigatório | Regra                                    |
+|-------------|-----------|-------------|-------------|------------------------------------------|
+| `id`        | `Long`    | `id`        | sim         | Gerado pelo banco                        |
+| `pessoa`    | `Pessoa`  | `id_pessoa` | sim         | FK para pessoa                           |
+| `matricula` | `String`  | `matricula` | sim         | Gerado no cadastro, máximo 64 caracteres |
 
 
 ### Professor
@@ -61,7 +61,7 @@ Cada curso tem um módulo ou disciplina que será lecionadas no curso.
 | `descricao`        | `String`          | `descricao`       | não         | Máximo 1024 e no minimo 16 caracteres         |
 | `cargaHoraria`     | `Int`             | `carga_horaria`   | sim         | Deve ser maior que zero                       |
 | `ordem`            | `Int`             | `ordem`           | sim         | Deve ser maior que zero e é unico com curso   |
-| ...                | ...               | ...               | ...         | ...                                           |
+
 
 ## Matéria de um módulo
 
