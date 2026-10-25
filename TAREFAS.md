@@ -63,6 +63,13 @@
 - [ ] Definir DTOs de Entrada (Requests) de Turma e MatriculaAlunoTurma.
 - [ ] Definir DTOs de Saída (Responses) de Turma e MatriculaAlunoTurma.
 
+### Service e Regras de Negócio
+
+...
+
+### End points e Controller
+
+...
 
 ### Revisões após implementação BackEnd
 
