@@ -57,12 +57,18 @@
 
 ### Contratos da API e DTOs
 
-- [ ] Definir DTOs de Entrada (Requests) de Pessoa, Aluno e Professor. - Laurence
-- [ ] Definir DTOs de Saída (Responses) de Pessoa, Aluno e Professor. - Laurence
-- [ ] Definir DTOs de Entrada (Requests) de Cursos, Módulos e Turmas. - Laurence
-- [ ] Definir DTOs de Saída (Responses) de Cursos, Módulos e Turmas. - Laurence
-- [ ] Definir DTOs de Entrada (Requests) de Turma e MatriculaAlunoTurma. - Laurence
-- [ ] Definir DTOs de Saída (Responses) de Turma e MatriculaAlunoTurma. - Laurence
+- [ x ] Definir DTOs de Entrada (Requests) de Pessoa, Aluno e Professor. - Laurence
+- [ x ] Definir DTOs de Saída (Responses) de Pessoa, Aluno e Professor. - Laurence
+- [ x ] Definir DTOs de Entrada (Requests) de Cursos, Módulos e Turmas. - Laurence
+- [ x ] Definir DTOs de Saída (Responses) de Cursos, Módulos e Turmas. - Laurence
+- [ x ] Definir DTOs de Entrada (Requests) de Turma e MatriculaAlunoTurma. - Laurence
+- [ x ] Definir DTOs de Saída (Responses) de Turma e MatriculaAlunoTurma. - Laurence
+- [  ] Implementar DTOs de Entrada (Requests) de Pessoa, Aluno e Professor. - Laurence
+- [  ] Implementar DTOs de Saída (Responses) de Pessoa, Aluno e Professor. - Laurence
+- [  ] Implementar DTOs de Entrada (Requests) de Cursos, Módulos e Turmas. - Laurence
+- [  ] Implementar DTOs de Saída (Responses) de Cursos, Módulos e Turmas. - Laurence
+- [  ] Implementar DTOs de Entrada (Requests) de Turma e MatriculaAlunoTurma. - Laurence
+- [  ] Implementar DTOs de Saída (Responses) de Turma e MatriculaAlunoTurma. - Laurence
 
 ### Service e Regras de Negócio
 

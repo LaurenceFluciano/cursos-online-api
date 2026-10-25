@@ -53,10 +53,11 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 
 | # | Regra | Onde está no código | Rota que usa |
 |---|---|---|---|
-| R1 | Um aluno não pode se matricular em uma turma que já esta cursando.  | TurmaService | POST /turmas/{idTurma}/alunos/{idAluno} |
-| R2 | Um aluno não pode se matricular em uma turma cujo período (matutino, vespertino, noturno e integral) já estaja ocupado por outra turma que ele participa. | TurmaService | POST /turma/{idTurma}/alunos/{idAluno} |
-| R3 | Um aluno não pode se matricular em uma turma em caxo de exceder o número de vagas | TurmaService | POST /turmas/{idTurma}/alunos/{idAluno} |
-| R4 | Um professor não pode ser aluno da turma que esta dando aula | TurmaService | POST /turmas/ |
+| R1 | Um aluno não pode se matricular em uma turma que já esta cursando.  | MatriculaService | POST /matriculas |
+| R2 | Um aluno não pode se matricular em uma turma cujo período (matutino, vespertino, noturno e integral) já estaja ocupado por outra turma que ele participa. | MatriculaService | POST /matriculas |
+| R3 | Um aluno não pode se matricular em uma turma em caxo de exceder o número de vagas | MatriculaService | POST /matriculas |
+| R4 | Um professor não pode ser aluno da turma que esta dando aula | MatriculaService | POST /matriculas/ |
+| R5 | Um aluno não pode se matricular em turmas que estão em período de planejamento | MatriculaService | POST /matriculas |
 
 **Fora do escopo:** Ele não será um SaaS que abrange diversas instuitições diferentes. Será uma solução para apenas uma instituição.
 

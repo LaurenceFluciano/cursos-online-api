@@ -21,29 +21,61 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa: as da AP
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
 | `GET` | `/cursos` | Lista os cursos | Nenhuma | lista de `CursoResponseDTO` | `200` | Nenhum | não |
-| `GET` | `/cursos/{id}` | Busca um cursos | Nenhuma | `CursoResponseDTO` | `200` | `404` | não |
-| `POST` | `/cursos` | Cadastra um cursos | `CursoRequestDTO` | `CursoResponseDTO` | `201` | `400` | não |
-| `PUT` | `/cursos/{id}` | Atualiza um cursos | `CursoRequestDTO` | `CursoResponseDTO` | `200` | `400`, `404` | não |
-| `DELETE` | `/cursos/{id}` | Remove um cursos | Nenhuma | Nenhuma (sem corpo) | `204` | `404` | não |
-| `POST` | `/cursos/{cursoId}/alunos/{alunoId}` | Matricula um aluno em um curso | `MatricularAlunoRequestDTO` | `MatricularAlunoResponseDTO` | `201` | `400` | não |
-| `POST` | `/cursos/{cursoId}/professores/{professorId}` | Matricula um professor para dar aulas no curso | `MatricularProfessorRequestDTO` | `MatricularProfessorResponseDTO` | `201` | `400` | não |
+| `GET` | `/cursos/{slug}` | Detalha um curso específico com seus módulos e matérias | Nenhuma | `CursoCompletoResponseDTO` | `200` | `404` | não |
+| `GET` | `/cursos/{id}` | Detalha um curso específico com seus módulos e matérias | Nenhuma | `CursoCompletoResponseDTO` | `200` | `404` | não |
+| `POST` | `/cursos` | Cadastra um novo curso | `CursoRequestDTO` | `CursoResponseDTO` | `201` | `400` | não |
+| `PUT` | `/cursos/{id}` | Atualiza os dados cadastrais de um curso | `AtualizarCursoRequestDTO` | `CursoResponseDTO` | `200` | `400`, `404` | não |
+| `DELETE` | `/cursos/{id}` | Remove um curso do catálogo | Nenhuma | Vazio | `204` | `400`, `404` | não |
 
+### Modulos
+
+| Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
+|---|---|---|---|---|---|---|---|
+| `POST` | `/modulos` | Adiciona um módulo a um curso | `ModuloRequestDTO` | `ModuloResponseDTO` | `201` | `400` | não |
+| `PUT` | `/modulos/{id}` | Atualiza os dados de um módulo | `AtualizarModuloDTO` | `ModuloResponseDTO` | `200` | `400`, `404` | não |
+| `DELETE` | `/modulos/{id}` | Remove um módulo | Nenhuma | Vazio | `204` | `400`, `404` | não |
+
+
+### Materias
+
+| Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
+|---|---|---|---|---|---|---|---|
+| `POST` | `/materias` | Adiciona uma matéria a um módulo | `MateriaRequestDTO` | `MateriaResponseDTO` | `201` | `400` | não |
+| `DELETE` | `/materias/{id}` | Remove uma matéria | Nenhuma | Vazio | `204` | `404` | não |
+
+
+### Turmas 
+
+| Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
+|---|---|---|---|---|---|---|---|
+| `POST` | `/turmas` | Cria uma turma | `TurmaRequestDTO` | `TurmaResponseDTO` | `201` | `400` | não |
+| `GET` | `/turmas` | Lista os turmas | Nenhuma | lista de lista de `TurmaResponseDTO` | `200` | Nenhum | não |
+| `GET` | `/turmas/{id}` | Busca uma turma por id | Nenhuma | `TurmaResponseDTO` | `200` | `404` | não |
+ `PATCH` | `/turmas/{id}` | Atualiza uma turma | `AtualizarTurmaRequestDTO` | `CursoResponseDTO` | `200` | `400`, `404` | não |
+| `DELETE` | `/turmas/{id}` | Remove uma turma | Nenhuma | Nenhuma (sem corpo) | `204` | `404` | não |
+
+
+### Matriculas
+
+| Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
+|--------|---------------|--------------------------------|-----------------------------|------------------------------|-------|-------|-----|
+| `POST` | `/matriculas` | Matricula um aluno em uma turma| `MatricularAlunoRequestDTO` | `MatricularAlunoResponseDTO` | `201` | `400` | não |
 
 ### Alunos
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| `POST` | `/alunos` | Matricula um aluno em um curso | `AlunoRequestDTO` | `AlunoResponseDTO` | `201` | `400` | não |
-| `GET` | `/alunos/{id}` | Busca um aluno | Nenhuma | `AlunoResponseDTO` | `200` | Nenhum | não |
+| `POST` | `/alunos` | Cadastra um aluno caso não existe e gera a matricula | `AlunoRequestDTO` | `AlunoResponseDTO` | `201` | `400` | não |
+| `GET` | `/alunos/{id}` | Busca um aluno por id | Nenhuma | `AlunoResponseDTO` | `200` | Nenhum | não |
 | `GET` | `/alunos/` | Lista os alunos | Nenhuma | lista de `AlunoResponseDTO` | `200` | Nenhum | não |
 
-### {{Recurso 3}}
+###  Professores
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| `POST` | `/professores` | Matricula um aluno em um curso | `ProfessorRequestDTO` | `ProfessorResponseDTO` | `201` | `400` | não |
-| `GET` | `/professores/{id}` | Busca um aluno | Nenhuma | `ProfessorResponseDTO` | `200` | Nenhum | não |
-| `GET` | `/professores/` | Lista os alunos | Nenhuma | lista de `ProfessorResponseDTO` | `200` | Nenhum | não |
+| `POST` | `/professores` | Cadastra um professor caso não exista | `ProfessorRequestDTO` | `ProfessorResponseDTO` | `201` | `400` | não |
+| `GET` | `/professores/{id}` | Busca um professor por id | Nenhuma | `ProfessorResponseDTO` | `200` | Nenhum | não |
+| `GET` | `/professores/` | Lista os professores | Nenhuma | lista de `ProfessorResponseDTO` | `200` | Nenhum | não |
 
 ### Rotas que não são CRUD
 
@@ -51,55 +83,158 @@ As que nascem das regras de negócio do README. Estas precisam funcionar nesta e
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
-| `POST` | `/cursos/{cursoId}/alunos/{alunoId}` | Matricula um aluno em um curso | R1, R2 e R3 | `201` | `400` |
-| `POST` | `/cursos/{cursoId}/professores/{professorId}` | Matricula um professor para dar aulas no curso | R4 | `201` | `400` | 
+| `POST` | `/matriculas` | Matricula um aluno em uma turma automaticamente | R1, R2, R3, R4 e R5 | `201` | `400` |
 | ... | ... | ... | ... | ... | ... |
 
 ## DTOs
 
 O que entra não é igual ao que sai: o cliente não envia `id` nem campos que a API decide.
 
+
+### Cursos
+
 | DTO | Direção | Campos | Validações |
 |---|---|---|---|
-| `CursoRequestDTO` *(exemplo)* | entrada | `nome`, `periodo`, lista de `materias` | Todos os campos são obrigatórios obrigatórios (`@NotBlank`) |
-| `CursoResponseDTO` *(exemplo)* | saída | `id`, `nome`, `periodo`, lista de `materias` | Nenhuma |
-| `AlunoRequestDTO` *(exemplo)* | entrada | `cpf`, `nome`, `email`, `matricula` | Todos os campos são obrigatórios (`@NotBlank`) |
-| `AlunoResponseDTO` *(exemplo)* | saída | `id`, `cpf`, `nome`, `email`, `matricula` | Nenhuma |
-| `ProfessorRequestDTO` *(exemplo)* | entrada | `cpf`, `nome`, `email`, `matricula` | Todos os campos são obrigatórios (`@NotBlank`) |
-| `ProfessorResponseDTO` *(exemplo)* | saída | `id`, `cpf`, `nome`, `email`, `matricula` | Nenhuma |
-| `MatricularAlunoRequestDTO` *(exemplo)* | entrada | Nenhuma | Nenhuma |
-| `MatricularAlunoResponseDTO` *(exemplo)* | saída | `idAluno`, `idCurso`, `ativo` | Nenhuma |
-| `MatricularProfessorRequestDTO` *(exemplo)* | entrada | Nenhuma | Nenhuma |
-| `MatricularProfessorResponseDTO` *(exemplo)* | saída | `idProfessor`, `idCurso`, `ativo` | Nenhuma |
+| `CursoRequestDTO` | Entrada (`POST`) | `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (EnumStatusCurso) | `titulo`: obrigatório, de 2 a 128 caracteres.<br>`subtitulo`: opcional, de 2 a 255 caracteres.<br>`resumo`: opcional, de 16 a 1024 caracteres.<br>`slug`: obrigatório, único, de 2 a 128 caracteres, apenas alfanuméricos e '-'.<br>`status`: obrigatório, valores válidos: `RASCUNHO`, `PUBLICADO`, `ARQUIVADO`. |
+| `AtualizarCursoRequestDTO` | Entrada (`PUT`) | `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (EnumStatusCurso) | Mesmas validações do `CursoRequestDTO`, mas aplicado para atualização parcial ou total. |
+| `CursoResponseDTO` | Saída | `id` (Long), `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (String) | Retorna os dados cadastrais básicos do curso. |
+| `CursoCompletoResponseDTO` | Saída | `id` (Long), `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (String), `modulos` (Lista de `ModuloComMateriasResponseDTO`) | Retorna a árvore pedagógica completa do curso (Módulos e suas respectivas Matérias aninhados). |
 
-| ... | ... | ... | ... |
+---
+
+### Módulos
+
+| DTO | Direção | Campos | Validações |
+|---|---|---|---|
+| `ModuloRequestDTO` | Entrada (`POST`) | `idCurso` (Long), `nome` (String), `descricao` (String), `cargaHoraria` (Integer), `ordem` (Integer) | `idCurso`: obrigatório, deve ser um curso existente.<br>`nome`: obrigatório, de 2 a 128 caracteres.<br>`descricao`: opcional, de 16 a 1024 caracteres.<br>`cargaHoraria`: obrigatório, deve ser maior que zero.<br>`ordem`: obrigatório, deve ser maior que zero e único por curso. |
+| `AtualizarModuloDTO` | Entrada (`PUT`) | `nome` (String), `descricao` (String), `cargaHoraria` (Integer), `ordem` (Integer) | `nome`, `cargaHoraria`, `ordem`: obrigatórios se enviados, seguindo as mesmas restrições de validação de valor do cadastro. |
+| `ModuloResponseDTO` | Saída | `id` (Long), `idCurso` (Long), `nome` (String), `descricao` (String), `cargaHoraria` (Integer), `ordem` (Integer) | Retorna os dados básicos do módulo criado ou alterado. |
+
+---
+
+### Matérias
+
+| DTO | Direção | Campos | Validações |
+|---|---|---|---|
+| `MateriaRequestDTO` | Entrada (`POST`) | `idModulo` (Long), `nome` (String) | `idModulo`: obrigatório, deve ser um módulo existente.<br>`nome`: obrigatório, de 2 a 128 caracteres, único dentro do mesmo módulo. |
+| `MateriaResponseDTO` | Saída | `id` (Long), `idModulo` (Long), `nome` (String) | Retorna os dados básicos da matéria cadastrada. |
+
+---
+
+###  Turmas
+
+| DTO | Direção | Campos | Validações |
+|---|---|---|---|
+| `TurmaRequestDTO` | Entrada (`POST`) | `idModulo` (Long), `idProfessor` (Long), `tipoPeriodo` (EnumTipoPeriodoTurma), `turno` (EnumTurnoTurma), `vagas` (Integer), `dataInicio` (Date), `dataFim` (Date) | `idModulo`, `idProfessor`: obrigatórios.<br>`tipoPeriodo`: obrigatório (`SEMESTRE`, `BIMESTRE`, `TRIMESTRE`, `QUADRIMESTRE`).<br>`turno`: obrigatório (`MATUTINO`, `VESPERTINO`, `NOTURNO`, `INTEGRAL`).<br>`vagas`: obrigatório, deve ser maior que zero.<br>`dataInicio`: opcional, deve ser maior ou igual à data de hoje. |
+| `AtualizarTurmaRequestDTO` | Entrada (`PATCH`) | `idProfessor` (Long), `vagas` (Integer), `dataInicio` (Date), `dataFim` (Date) | Campos opcionais para ajuste ou remanejamento de professores e vagas. |
+| `TurmaResponseDTO` | Saída | `id` (Long), `idModulo` (Long), `idProfessor` (Long), `periodoLetivo` (String), `tipoPeriodo` (String), `turno` (String), `vagas` (Integer), `dataInicio` (Date), `dataFim` (Date) | `periodoLetivo` é gerado automaticamente pelo back-end no formato `YYYY/p`. |
+
+---
+
+### Matrículas
+
+| DTO | Direção | Campos | Validações |
+|---|---|---|---|
+| `MatricularAlunoRequestDTO` | Entrada (`POST`) | `idAluno` (Long), `idTurma` (Long) | `idAluno`, `idTurma`: obrigatórios. O sistema valida se existem vagas disponíveis na turma antes de confirmar. |
+| `MatricularAlunoResponseDTO` | Saída | `idMatricula` (Long), `idAluno` (Long), `idTurma` (Long), `dataMatricula` (Timestamp), `status` (String) | Retorna o ID do vínculo criado, a data gerada automaticamente e o status inicial (`Matriculado`/`Ativo`). |
+
+---
+
+### Alunos
+
+| DTO | Direção | Campos | Validações |
+|---|---|---|---|
+| `AlunoRequestDTO` | Entrada (`POST`) | `nome` (String), `cpf` (String), `email` (String) | `nome`: obrigatório, até 255 caracteres.<br>`cpf`: obrigatório, deve ser um CPF válido, contendo apenas 11 dígitos numéricos.<br>`email`: obrigatório, formato de e-mail válido, até 255 caracteres. |
+| `AlunoResponseDTO` | Saída | `id` (Long),  `nome` (String), `cpf` (String), `email` (String), `matricula` (String) | `matricula` é a Matrícula Global/RA gerada automaticamente pelo sistema com até 64 caracteres. |
+
+---
+
+### Professores
+
+| DTO | Direção | Campos | Validações |
+|---|---|---|---|
+| `ProfessorRequestDTO` | Entrada (`POST`) | `nome` (String), `cpf` (String), `email` (String) | `nome`: obrigatório, até 255 caracteres.<br>`cpf`: obrigatório, deve ser um CPF válido.<br>`email`: obrigatório, formato de e-mail válido. |
+| `ProfessorResponseDTO` | Saída | `id` (Long),  `nome` (String), `cpf` (String), `email` (String) | Retorna os dados do professor cadastrado e o vínculo com a tabela Pessoa. |
+
+
 
 ## Exemplos
 
 Um par requisição/resposta por entidade.
 
-### `POST /cursos` *(exemplo)*
+### `POST /cursos`
 
-Requisição:
-
+**Requisição (Body):**
 ```json
 {
-  "nome": "Curso de backend",
-  "periodo": "Noturno",
-  "materias": ["Backend"]
+  "titulo": "Desenvolvimento Backend Avançado",
+  "subtitulo": "Formação completa em arquitetura de microsserviços e nuvem",
+  "resumo": "Aprenda a construir APIs resilientes, escaláveis e prontas para produção utilizando Java, Spring Boot, Docker e os principais provedores de nuvem do mercado.",
+  "slug": "desenvolvimento-backend-avancado",
+  "status": "PUBLICADO"
 }
 ```
 
-Resposta, `201 Created`:
-
+**Resposta (Sucesso - 201 Created):**
 ```json
 {
   "id": 1,
-  "titulo": "Curso de backend",
-  "periodo": "Noturno",
-  "materias": ["Backend"]
+  "titulo": "Desenvolvimento Backend Avançado",
+  "subtitulo": "Formação completa em arquitetura de microsserviços e nuvem",
+  "resumo": "Aprenda a construir APIs resilientes, escaláveis e prontas para produção utilizando Java, Spring Boot, Docker e os principais provedores de nuvem do mercado.",
+  "slug": "desenvolvimento-backend-avancado",
+  "status": "PUBLICADO"
 }
 ```
+
+---
+
+### `POST /modulos`
+
+**Requisição (Body):**
+```json
+{
+  "idCurso": 1,
+  "nome": "Arquitetura Web, Protocolo HTTP e APIs",
+  "descricao": "Neste módulo você compreenderá os fundamentos da internet, o ciclo de request/response e as boas práticas de design RESTful.",
+  "cargaHoraria": 40,
+  "ordem": 1
+}
+```
+
+**Resposta (Sucesso - 201 Created):**
+```json
+{
+  "id": 12,
+  "idCurso": 1,
+  "nome": "Arquitetura Web, Protocolo HTTP e APIs",
+  "descricao": "Neste módulo você compreenderá os fundamentos da internet, o ciclo de request/response e as boas práticas de design RESTful.",
+  "cargaHoraria": 40,
+  "ordem": 1
+}
+```
+
+---
+
+### `POST /materias`
+
+**Requisição (Body):**
+```json
+{
+  "idModulo": 12,
+  "nome": "Estilos Arquiteturais e Richardson Maturity Model"
+}
+```
+
+**Resposta (Sucesso - 201 Created):**
+```json
+{
+  "id": 85,
+  "idModulo": 12,
+  "nome": "Estilos Arquiteturais e Richardson Maturity Model"
+}
+```
+
 
 ## Erros
 
