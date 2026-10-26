@@ -34,6 +34,7 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 **Quem usa o sistema:**
 
 | Quem | O que faz no sistema |
+|------|----------------------|
 | Alunos | Se matricula em cursos online para estudar. |
 | Coordenadores da Instituição de Ensino | Gerencia os cursos e as matriculas. |
 | Professores | Responsáveis por lecionar nas aulas |
@@ -73,9 +74,7 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 
 A API é organizada em camadas. Uma requisição entra pelo Controller, passa pelo Service, que aplica as regras de negócio, e chega ao banco pelo Repository; a resposta faz o caminho de volta. O Mapper converte DTO em entidade e entidade em DTO.
 
-(*deve ser completado apenas no final da implementação da api*)
-
-**Mapa da estrutura.** Uma linha por entidade, todas as do modelo. Em cada célula, a classe e a situação: **pronta**, **implementada** (já tem lógica), **em parte** (só uma parte das rotas) ou **montada** (criada, ligada às outras, ainda sem lógica).
+### Componentes implementados
 
 > **Observações**: Foram só consideradas as migrations que criam entidades, as que realizam pequenas atualizações não foram incluidas.
 
