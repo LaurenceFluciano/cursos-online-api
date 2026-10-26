@@ -1,16 +1,5 @@
 # API Cursos Online
 
-> **Este é o ponto de partida do projeto do grupo.** Apague este bloco antes de entregar.
->
-> **O que falta fazer:**
-> 1. Faça a API simples e implemente as regras de negócio.
-> 2. Termine este README: troque tudo o que está entre `{{ }}` e apague o que está marcado com *(exemplo)*. Mantenha as seções e a ordem.
-> 3. Abra o repositório no GitHub, leia o README como quem nunca viu o projeto e preencha `docs/autoavaliacao.md`.
->
-> Na primeira vez que a API sobe, antes de existir tabela e rota, o Flyway avisa `No migrations found` e o Swagger UI mostra `No operations defined in spec!`. É o esperado.
->
-> Os exemplos marcados com *(exemplo)* são de uma biblioteca. O projeto completo dela está em `Aula 10-11/exemplo-biblioteca`.
-
 Um sistema para uma instituição de ensino e cursos técnicos criem cursos onlines em que alunos que moram muito longe, caso tenha acesso a internet, podem estudar e realizar o curso a distância.  
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
@@ -172,14 +161,6 @@ Todo erro sai no mesmo formato. Este é o `400` de uma regra de negócio violada
 ```
 
 Um campo inválido também devolve `400`, com a lista `campos` dizendo qual campo corrigir. Um id que não existe devolve `404`.
-
-### As planejadas
-
-Estão no contrato, mas ainda não respondem.
-
-| Recurso | O que vai fazer |
-|---|---|
-| ... | ... |
 
 O contrato completo, com todas as rotas e os DTOs, está em [docs/contrato-da-api.md](docs/contrato-da-api.md).
 
