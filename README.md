@@ -194,11 +194,16 @@ O contrato completo, com todas as rotas e os DTOs, está em [docs/contrato-da-ap
 Pré-requisitos: JDK 25, Docker Desktop aberto e Git.
 
 ```bash
-git clone https://github.com/{{usuario}}/{{repositorio}}.git
-cd {{repositorio}}
+git clone https://github.com/LaurenceFluciano/cursos-online-api
+cd cursos-online-api
 
 docker compose up -d          # sobe o PostgreSQL na porta 5437
-./mvnw spring-boot:run        # Windows: .\mvnw.cmd spring-boot:run
+
+# Linux:
+./mvnw spring-boot:run        
+
+# Windows: 
+.\mvnw.cmd spring-boot:run
 ```
 
 Com a API no ar:
