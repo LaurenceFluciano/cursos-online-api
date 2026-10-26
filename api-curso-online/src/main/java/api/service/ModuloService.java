@@ -14,6 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+
+// CAMADA: Service
+// RESPONSABILIDADE: regras de negócio dos módulos.
+// REGRAS: C4
+// ROTAS ATENDIDAS: as de /modulos/{id}  em docs/contrato-da-api.md.
+// SITUAÇÃO: montada. A lógica entra quando a rota for implementada.
 @Service
 public class ModuloService {
 
