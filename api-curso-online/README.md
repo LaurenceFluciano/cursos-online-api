@@ -31,9 +31,9 @@ Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1
 
 | Nome | GitHub |
 |---|---|
-| Laurence Floriano Luciano | [@{{usuario}}](https://github.com/LaurenceFluciano) |
-| Antonio Henrique Citadin Benedet | [@{{usuario}}](https://github.com/TonhoProgram) |
-| Igor Schug Zizinio | [@{{usuario}}](https://github.com/igorzizinio) |
+| Laurence Floriano Luciano | [@LaurenceFluciano](https://github.com/LaurenceFluciano) |
+| Antonio Henrique Citadin Benedet | [@TonhoProgram](https://github.com/TonhoProgram) |
+| Igor Schug Zizinio | [@Igorzizinio](https://github.com/igorzizinio) |
 
 ## O problema
 
