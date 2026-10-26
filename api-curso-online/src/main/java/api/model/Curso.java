@@ -1,38 +1,36 @@
 package api.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "Curso")
+@Table(name = "curso")
 public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Size(min = 2, max = 128, message = "O titulo do curso deve conter entre 2 e 128 caracteres")
-    @Column(name = "titulo", nullable = false, unique = false)
+    @Column(name = "titulo", nullable = false, length = 128)
     private String titulo;
 
-    @Size(min = 2, max = 255, message = "O subtítulo do curso deve conter entre 2 e 255 caracteres")
-    @Column(name = "subtitulo", nullable = true, unique = false)
+    @Column(name = "subtitulo", nullable = true, length = 255)
     private String subtitulo;
 
-    @Size(min = 16, max = 1024, message = "O resumo do curso deve conter entre 16 e 1024 caracteres")
-    @Column(name = "resumo", nullable = true, unique = false)
+    @Column(name = "resumo", nullable = true, length = 1024)
     private String resumo;
 
-    @Size(min = 2, max = 128, message = "O slug do curso deve conter entre 2 e 128 caracteres")
-    @Pattern(regexp = "^[A-Za-z0-9-]+$", message = "O slug do curso deve conter somente caracteres alfanuméricos e '-' ")
-    @Column(name = "slug", nullable = false, unique = false)
+    @Column(name = "slug", nullable = false, unique = true, length = 128)
     private String slug;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, unique = false)
+    @Column(name = "status", nullable = false, length = 64)
     private enumStatusCurso status;
 
     public enum enumStatusCurso {
@@ -41,26 +39,24 @@ public class Curso {
         ARQUIVADO
     }
 
-    public Curso() {
-
+    protected Curso() {
     }
 
-    public long getId() {return id;}
-    public void setId(long id) {this.id = id;}
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
 
-    public String getTitulo() {return titulo;}
-    public void setTitulo(String titulo) {this.titulo = titulo;}
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getSubtitulo() {return subtitulo;}
-    public void setSubtitulo(String subtitulo) {this.subtitulo = subtitulo;}
+    public String getSubtitulo() { return subtitulo; }
+    public void setSubtitulo(String subtitulo) { this.subtitulo = subtitulo; }
 
-    public String getResumo() {return resumo;}
-    public void setResumo(String resumo) {this.resumo = resumo;}
+    public String getResumo() { return resumo; }
+    public void setResumo(String resumo) { this.resumo = resumo; }
 
-    public String getSlug() {return slug;}
-    public void setSlug(String slug) {this.slug = slug;}
+    public String getSlug() { return slug; }
+    public void setSlug(String slug) { this.slug = slug; }
 
-    public enumStatusCurso getStatus() {return status;}
-    public void setStatus(enumStatusCurso status) {this.status = status;}
-
+    public enumStatusCurso getStatus() { return status; }
+    public void setStatus(enumStatusCurso status) { this.status = status; }
 }

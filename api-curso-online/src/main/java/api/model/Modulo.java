@@ -1,13 +1,18 @@
 package api.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table (name = "modulo",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"id_curso", "ordem"})
-)
+@Table(name = "modulo",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"id_curso", "ordem"}))
 public class Modulo {
 
     @Id
@@ -15,45 +20,39 @@ public class Modulo {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "curso", nullable = false)
+    @JoinColumn(name = "id_curso", nullable = false)
     private Curso curso;
 
-    @Size(min = 2, max = 128, message = "O nome do modulo deve conter entre 2 e 128 caracteres")
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", nullable = false, length = 128)
     private String nome;
 
-    @Size(min = 16, max =1024, message = "a descrição do modulo deve conter entre 16 e 1024 caracteres")
-    @Column(name = "descricao", nullable = true)
+    @Column(name = "descricao", nullable = true, length = 1024)
     private String descricao;
 
-    @Min(value = 1, message = "A carga horária do modulo deve ser maior que 0")
-    @Column(name = "cargaHoraria", nullable = false)
+    @Column(name = "carga_horaria", nullable = false)
     private int cargaHoraria;
 
-    @Min(value = 1, message = "A ordem do modulo deve ser maior que 0")
     @Column(name = "ordem", nullable = false)
     private int ordem;
 
-    public Modulo() {
-
+    protected Modulo() {
     }
 
     public long getId() { return id; }
-    public void setId(long Id){ this.id=Id; }
+    public void setId(long id) { this.id = id; }
 
     public Curso getCurso() { return curso; }
-    public void setCurso(Curso Curso){ this.curso=Curso; }
+    public void setCurso(Curso curso) { this.curso = curso; }
 
     public String getNome() { return nome; }
-    public void setNome(String Nome){ this.nome=Nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
     public String getDescricao() { return descricao; }
-    public void setDescricao(String Descricao){ this.descricao=Descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
     public int getCargaHoraria() { return cargaHoraria; }
-    public void setCargaHoraria( int cargaHoraria) {this.cargaHoraria=cargaHoraria; }
+    public void setCargaHoraria(int cargaHoraria) { this.cargaHoraria = cargaHoraria; }
 
     public int getOrdem() { return ordem; }
     public void setOrdem(int ordem) { this.ordem = ordem; }
-
 }
