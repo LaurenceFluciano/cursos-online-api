@@ -54,13 +54,15 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 | # | Regra | Onde está no código | Rota que usa |
 |---|---|---|---|
 | R1 | Um aluno não pode se matricular em uma turma que já esta cursando.  | MatriculaService | POST /matriculas |
-| R2 | Um aluno não pode se matricular em uma turma cujo período (matutino, vespertino, noturno e integral) já estaja ocupado por outra turma que ele participa. | MatriculaService | POST /matriculas |
-| R3 | Um aluno não pode se matricular em uma turma em caxo de exceder o número de vagas | MatriculaService | POST /matriculas |
-| R4 | Um professor não pode ser aluno da turma que esta dando aula | MatriculaService | POST /matriculas/ |
-| R5 | Um aluno não pode se matricular em turmas que estão em período de planejamento | MatriculaService | POST /matriculas |
+| R2 | Um aluno não pode se matricular em uma turma em caso de exceder o número de vagas | MatriculaService | POST /matriculas |
+| R3 | Um professor não pode ser aluno da turma que esta dando aula | MatriculaService | POST /matriculas/ |
+| R4 | Um aluno não pode se matricular em turmas que estão em período de planejamento | MatriculaService | POST /matriculas |
 
-**Fora do escopo:** Ele não será um SaaS que abrange diversas instuitições diferentes. Será uma solução para apenas uma instituição.
+**Fora do escopo:**
 
+- O sistema não valida choque de horários ou ocupação por período (matutino/vespertino/noturno), pois a aplicação não faz o controle de cronograma de horários das aulas.
+- O sistema não irá bloquear a publicação ou abertura de um curso exigindo o cadastro do PPC (Projeto Pedagógico de Curso).
+  
 ## Tecnologias
 
 | O quê | Qual |
@@ -81,19 +83,30 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
-| Alunos | `V1__criar_alunos.sql`, incompleta | `Aluno`, incompleto | `AlunoRepository`, incompleto | `AlunoRequestDTO`, `AlunoResponseDTO`, incompleto | `AlunoMapper`, incompleto | `AlunoService`, incompleto | `AlunoController`, incompleto |
-| Professores | `V2__criar_professores.sql`, incompleta | `Professor`, incompleto | `ProfessorRepository`, incompleto | `ProfessorRequestDTO`, `ProfessorResponseDTO`, incompleto | `ProfessorMapper`, incompleto | `ProfessorService`, incompleto | `ProfessorController`, incompleto |
-| Cursos | `V3__criar_cursos.sql`, incompleta | `Curso`, incompleto | `CursoRepository`, incompleto | `CursoRequestDTO`, `CursoResponseDTO`, incompleto | `CursoMapper`, incompleto | `CursoService`, incompleto | `CursoController`, incompleto |
+| Pessoa | `V1__criar_pessoa.sql`, pronta | `Pessoa`, pronta | `PessoaRepository`, pronta | *Não se aplica* | *Não se aplica* | *Não se aplica* | *Não se aplica* |
+| Aluno | `V2__criar_aluno.sql`, pronta | `Aluno`, pronta | `AlunoRepository`, pronta | `AlunoRequestDTO`, `AlunoResponseDTO`, pronta | `AlunoMapper`, pronta | `AlunoService`, pronta | `AlunoController`, pronta |
+| Professor | `V3__criar_professor.sql`, pronta | `Professor`, pronta | `ProfessorRepository`, pronta | `ProfessorRequestDTO`, `ProfessorResponseDTO`, pronta | `ProfessorMapper`, pronta | `ProfessorService`, pronta | `ProfessorController`, pronta |
+| Curso | `V4__criar_curso.sql`, pronta | `Curso`, pronta | `CursoRepository`, pronta | `CursoRequestDTO`, `AtualizarCursoRequestDTO`, `CursoCompletoResponseDTO` e `CursoResponseDTO`, pronta | `CursoMapper`, pronta | `CursoService`, pronta | `CursoController`, pronta |
+| Modulo | `V5__criar_modulo.sql`, pronta | `Modulo`, pronta | `ModuloRepository`, pronta | `ModuloRequestDTO`, `AtualizarModuloRequestDTO` e `ModuloResponseDTO`, pronta | `ModuloMapper`, pronta | `ModuloService`, pronta | `ModuloController`, pronta |
+| Materia | `V6__criar_materia.sql`, pronta | `Materia`, pronta | `MateriaRepository`, pronta | `MateriaRequestDTO` e `MateriaResponseDTO`, pronta | `MateriaMapper`, pronta | `MateriaService`, pronta | `MateriaController`, pronta |
+| Turma | `V7__criar_turma.sql`, pronta | `Turma`, pronta | `TurmaRepository`, pronta | `TurmaRequestDTO`, `AtualizarTurmaRequestDTO` e `TurmaResponseDTO`, pronta | `TurmaMapper`, pronta | `TurmaService`, pronta | `TurmaController`, pronta |
+| MatriculaAlunoTurma | `V8__criar_matricula_aluno_turma.sql`, pronta | `MatriculaAlunoTurma`, pronta | `MatriculaAlunoTurmaRepository`, pronta | `MatriculaAlunoTurmaRequestDTO` e `TurmaResponseDTO`, pronta | `MatriculaAlunoTurmaMapper`, pronta | `MatriculaAlunoTurmaService`, pronta | `MatriculaAlunoTurmaController`, pronta |
 
-| ... | ... | ... | ... | ... | ... | ... | ... |
 
 ## Entidades
 
-(*deve ser completado apenas no final da implementação da api e documentacao*)
 
 | Entidade | O que representa | Como se relaciona |
 |---|---|---|
-| Pessoa | Uma pessoa da instituição de ensino ou possível cliente potencial | Aparece nas especializações de aluno e professor |
+| **Pessoa** | Uma pessoa da instituição de ensino ou possível cliente potencial | Relaciona-se com `Aluno` (1:1) e `Professor` (1:1) |
+| **Aluno** | Um estudante matriculado na instituição, representando o aluno ativo | Relaciona-se com `Pessoa` (1:1) e `MatriculaAlunoTurma` (1:N) |
+| **Professor** | Uma pessoa da instituição de ensino que dá aula aos alunos | Relaciona-se com `Pessoa` (1:1) e `Turma` (1:N) |
+| **Curso** | O curso disponível no catálogo da instituição | Relaciona-se com `Modulo` (1:N) |
+| **Módulo** | Cada bloco estrutural ou disciplina que compõe o curso | Relaciona-se com `Curso` (N:1), `Materia` (1:N) e `Turma` (1:N) |
+| **Matéria** | Conteúdos específicos e obrigatórios ensinados dentro de um módulo | Relaciona-se com `Modulo` (N:1) |
+| **Turma** | A ocorrência prática de um módulo em um período letivo | Relaciona-se com `Modulo` (N:1), `Professor` (N:1) e `MatriculaAlunoTurma` (1:N) |
+| **MatriculaAlunoTurma** | Tabela associativa que vincula o aluno a uma turma específica | Relaciona-se com `Aluno` (N:1) e `Turma` (N:1) |
+
 
 Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](docs/modelo-de-dominio.md).
 
@@ -101,7 +114,6 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 
 ### As que já funcionam
 
-(*deve ser completado apenas no final da implementação da api*)
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
@@ -134,14 +146,14 @@ Resposta, `201 Created`:
 
 ### Erros
 
-Todo erro sai no mesmo formato. Este é o `400` de uma regra de negócio violada *(exemplo)*:
+Todo erro sai no mesmo formato. Este é o `400` de uma regra de negócio violada:
 
 ```json
 {
   "status": 400,
   "erro": "Bad Request",
-  "mensagem": "R2: o livro já está emprestado",
-  "caminho": "/emprestimos",
+  "mensagem": "R1: Um aluno não pode se matricular em uma turma que já esta cursando.",
+  "caminho": "/matriculas",
   "timestamp": "2026-10-06T19:30:00",
   "campos": []
 }
@@ -186,11 +198,9 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 
 | Parte | Situação |
 |---|---|
-| Desenho | {{ex.: completo: problema e regras neste README, modelo e contrato em docs/}} |
-| Estrutura | {{ex.: as 3 entidades têm migration, entidade, Repository, DTOs, Mapper, Service e Controller}} |
-| API e regras | {{ex.: as rotas de livros funcionam; R1, R2 e R3 estão implementadas}} |
-
-**Ainda não funciona:** {{as rotas planejadas que ainda não respondem}}
+| Desenho | completo: as regras de negócio, contratos e modelagem estão todas definidas nesse readme |
+| Estrutura | Todas as entidades têm migration, entidades, Repository, DTOs, Mapper, Service e Controller. |
+| API e regras | Todas as rotas documentadas funcionam; As regras R1, R2, R3 e R4 estão implementadas}} |
 
 ## Documentação
 
