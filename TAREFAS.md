@@ -8,7 +8,7 @@
 
 ### Implementação da camada Model
 
-- [ x] Criar as entidades Pessoa, Aluno e Professor seguindo a modelagem definida em [Dominio](./api-curso-online//docs//modelo-de-dominio.md) - Laurence
+- [ x ] Criar as entidades Pessoa, Aluno e Professor seguindo a modelagem definida em [Dominio](./api-curso-online//docs//modelo-de-dominio.md) - Laurence
 
 - [ ] Criar as entidades Curso, Módulo e Materia seguindo a modelagem definida em [Dominio](./api-curso-online//docs//modelo-de-dominio.md) - Antonio
 
@@ -16,9 +16,9 @@
 
 ### Implementação da camada Repository
 
-- [ ] Criar PessoaRepository. - Laurence
-- [ ] Criar AlunoRepository. - Laurence
-- [ ] Criar ProfessorRepository. - Laurence
+- [ x ] Criar PessoaRepository. - Laurence
+- [ x ] Criar AlunoRepository. - Laurence
+- [ x ] Criar ProfessorRepository. - Laurence
 - [ ] Criar CursoRepository. - Antonio
 - [ ] Criar ModuloRepository. - Antonio
 - [ ] Criar MateriaRepository. - Antonio
@@ -33,7 +33,7 @@
 - [ x ] Definir DTOs de Saída (Responses) de Cursos, Módulos e Turmas. - Laurence
 - [ x ] Definir DTOs de Entrada (Requests) de Turma e MatriculaAlunoTurma. - Laurence
 - [ x ] Definir DTOs de Saída (Responses) de Turma e MatriculaAlunoTurma. - Laurence
-- [  ] Implementar DTOs de Entrada (Requests) de Pessoa, Aluno e Professor. - Laurence
+- [ x ] Implementar DTOs de Entrada (Requests) de Pessoa, Aluno e Professor. - Laurence
 - [  ] Implementar DTOs de Saída (Responses) de Pessoa, Aluno e Professor. - Laurence
 - [  ] Implementar DTOs de Entrada (Requests) de Cursos, Módulos e Turmas. - Antonio
 - [  ] Implementar DTOs de Saída (Responses) de Cursos, Módulos e Turmas. - Antonio
@@ -42,7 +42,7 @@
 
 ### Implementação na camada de Services
 
-- [  ] Implementar AlunoService - Laurence
+- [ x ] Implementar AlunoService - Laurence
 - [  ] Implementar ProfessorService - Laurence
 - [  ] Implementar MatriculaService - Igor
 - [  ] Implementar TurmaService - Igor
@@ -52,7 +52,7 @@
 
 ### Implementação na camada de Controller
 
-- [  ] Implementar AlunoController - Laurence
+- [ x ] Implementar AlunoController - Laurence
 - [  ] Implementar ProfessorController - Laurence
 - [  ] Implementar MatriculaController - Igor
 - [  ] Implementar TurmaController - Igor

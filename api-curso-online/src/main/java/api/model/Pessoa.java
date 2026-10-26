@@ -46,4 +46,16 @@ public class Pessoa {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getCpf() {
+        return this.cpf;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
 }
