@@ -17,6 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+// CAMADA: Service
+// RESPONSABILIDADE: regras de negócio dos cursos.
+// REGRAS: C1, C2 e C4
+// ROTAS ATENDIDAS: as de /cursos/{id}  em docs/contrato-da-api.md.
+// SITUAÇÃO: montada. A lógica entra quando a rota for implementada.
 @Service
 public class CursoService {
 
