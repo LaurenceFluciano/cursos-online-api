@@ -120,12 +120,14 @@ public class TurmaService {
 
     private Turma buscarTurma(Long id) {
         return this.turmaRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Turma não encontrada."));
+                .orElseThrow(() -> new TurmaNaoEncontradaException(id));
     }
 
+
+    // "reimplementação" de buscas feitas no ModuloService e ProfessorService, assim não precisamos injetar esses serviços aqui, e conflito de permissões no futuro
     private Modulo buscarModulo(Long id) {
         return this.moduloRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Módulo não encontrado."));
+                .orElseThrow(() -> new ModuloNaoEncontradoException(id));
     }
 
     private Professor buscarProfessor(Long id) {
