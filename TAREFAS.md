@@ -22,7 +22,7 @@
 - [ ] Criar CursoRepository. - Antonio
 - [ ] Criar ModuloRepository. - Antonio
 - [ ] Criar MateriaRepository. - Antonio
-- [ ] Criar TurmaRepository. - Igor
+- [ x ] Criar TurmaRepository. - Igor
 - [ ] Criar MatriculaAlunoTurmaRepository. - Igor
 
 ### Implementação na camada de Contratos da API e DTOs
@@ -45,7 +45,7 @@
 - [ x ] Implementar AlunoService - Laurence
 - [  ] Implementar ProfessorService - Laurence
 - [  ] Implementar MatriculaService - Igor
-- [  ] Implementar TurmaService - Igor
+- [ x ] Implementar TurmaService - Igor
 - [ x ] Implementar CursoService - Antonio
 - [ x ] Implementar ModuloService - Antonio
 - [ x ] Implementar MateriaService - Antonio
@@ -55,7 +55,7 @@
 - [ x ] Implementar AlunoController - Laurence
 - [  ] Implementar ProfessorController - Laurence
 - [  ] Implementar MatriculaController - Igor
-- [  ] Implementar TurmaController - Igor
+- [ x ] Implementar TurmaController - Igor
 - [  ] Implementar CursoController - Antonio
 - [  ] Implementar ModuloController - Antonio
 - [  ] Implementar MateriaController - Antonio
