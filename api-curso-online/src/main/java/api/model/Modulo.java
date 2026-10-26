@@ -38,6 +38,14 @@ public class Modulo {
     protected Modulo() {
     }
 
+    public Modulo(Curso curso, String nome, String descricao, int cargaHoraria, int ordem) {
+        this.curso = curso;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.cargaHoraria = cargaHoraria;
+        this.ordem = ordem;
+    }
+
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 

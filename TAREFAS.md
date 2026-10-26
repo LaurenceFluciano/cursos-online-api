@@ -46,9 +46,9 @@
 - [  ] Implementar ProfessorService - Laurence
 - [  ] Implementar MatriculaService - Igor
 - [  ] Implementar TurmaService - Igor
-- [  ] Implementar CursoService - Antonio
-- [  ] Implementar ModuloService - Antonio
-- [  ] Implementar MateriaService - Antonio
+- [ x ] Implementar CursoService - Antonio
+- [ x ] Implementar ModuloService - Antonio
+- [ x ] Implementar MateriaService - Antonio
 
 ### Implementação na camada de Controller
 

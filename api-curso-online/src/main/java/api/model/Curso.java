@@ -42,6 +42,14 @@ public class Curso {
     protected Curso() {
     }
 
+    public Curso(String titulo, String subtitulo, String resumo, String slug, enumStatusCurso status) {
+        this.titulo = titulo;
+        this.subtitulo = subtitulo;
+        this.resumo = resumo;
+        this.slug = slug;
+        this.status = status;
+    }
+
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
