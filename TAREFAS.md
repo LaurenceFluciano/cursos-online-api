@@ -12,7 +12,7 @@
 
 - [ ] Criar as entidades Curso, Módulo e Materia seguindo a modelagem definida em [Dominio](./api-curso-online//docs//modelo-de-dominio.md) - Antonio
 
-- [ ] Criar as entidades Turma e MatriculaAlunoTurma seguindo a modelagem definida em [Dominio](./api-curso-online//docs//modelo-de-dominio.md) - Igor
+- [ x ] Criar as entidades Turma e MatriculaAlunoTurma seguindo a modelagem definida em [Dominio](./api-curso-online//docs//modelo-de-dominio.md) - Igor
 
 ### Implementação da camada Repository
 
