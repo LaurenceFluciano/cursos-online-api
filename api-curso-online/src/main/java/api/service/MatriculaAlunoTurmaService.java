@@ -23,6 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+// CAMADA: Service
+// RESPONSABILIDADE: regras de negócio das matriculas.
+// REGRAS: R1, R2, R3, R4, R5, R6 e R7
+// ROTAS ATENDIDAS: as de /matriculas e /matriculas/{id}/status  em docs/contrato-da-api.md.
+// SITUAÇÃO: montada. A lógica entra quando a rota for implementada.
 @Service
 public class MatriculaAlunoTurmaService {
 
