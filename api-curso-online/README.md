@@ -212,7 +212,7 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 |---|---|
 | Desenho | completo: as regras de negócio, contratos e modelagem estão todas definidas nesse readme |
 | Estrutura | Todas as entidades têm migration, entidades, Repository, DTOs, Mapper, Service e Controller. |
-| API e regras | Todas as rotas documentadas funcionam; As regras R1, R2, R3 e R4 estão implementadas}} |
+| API e regras | Todas as rotas documentadas funcionam; Todas as regras foram implementadas |
 
 ## Documentação
 
