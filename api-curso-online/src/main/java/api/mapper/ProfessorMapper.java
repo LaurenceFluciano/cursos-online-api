@@ -3,6 +3,7 @@ package api.mapper;
 import org.springframework.stereotype.Component;
 
 import api.dto.ProfessorResponseDTO;
+import api.model.Pessoa;
 import api.model.Professor;
 
 @Component 
@@ -15,5 +16,10 @@ public class ProfessorMapper {
             professor.getPessoa().getCpf(),
             professor.getPessoa().getEmail()
         );
+    }
+
+    public Professor toEntity(Pessoa pessoa) {
+        Professor professor = new Professor(pessoa);
+        return professor;
     }
 }

@@ -2,7 +2,6 @@ package api.mapper;
 
 import org.springframework.stereotype.Component;
 
-import api.dto.AlunoRequestDTO;
 import api.dto.AlunoResponseDTO;
 import api.model.Aluno;
 import api.model.Pessoa;
@@ -24,14 +23,6 @@ public class AlunoMapper {
         Aluno aluno = new Aluno(pessoa);
         aluno.setMatricula(matricula);
         return aluno;
-    }
-
-    public void toUpdate(Aluno aluno, AlunoRequestDTO alunoRequestDTO) {
-
-        if (alunoRequestDTO.cpf() != null) {
-            
-        }
-
     }
 
 }

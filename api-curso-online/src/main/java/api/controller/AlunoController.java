@@ -1,14 +1,13 @@
 package api.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import api.dto.AlunoRequestDTO;
 import api.dto.AlunoResponseDTO;
 import api.dto.PageResponse;
 import api.service.AlunoService;
-import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody; 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.data.domain.Pageable;
