@@ -42,16 +42,21 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 
 | # | Regra | Onde está no código | Rota que usa |
 |---|---|---|---|
-| R1 | Um aluno não pode se matricular em uma turma que já esta cursando.  | MatriculaService | POST /matriculas |
-| R2 | Um aluno não pode se matricular em uma turma em caso de exceder o número de vagas | MatriculaService | POST /matriculas |
-| R3 | Um professor não pode ser aluno da turma que esta dando aula | MatriculaService | POST /matriculas/ |
-| R4 | Um aluno não pode se matricular em turmas que estão em período de planejamento | MatriculaService | POST /matriculas |
+| R1 | Um aluno não pode se matricular em uma turma em que já está matriculado.  | MatriculaAlunoTurmaService | POST /matriculas |
+| R2 | Um aluno não pode se matricular em uma turma em caso de exceder o número de vagas (conta matrículas `MATRICULADO` e `ATIVO`) | MatriculaAlunoTurmaService | POST /matriculas |
+| R3 | Um professor não pode ser aluno da turma que esta dando aula | MatriculaAlunoTurmaService | POST /matriculas |
+| R4 | Um aluno não pode se matricular em turmas que ainda não começaram (período de planejamento, ou sem data de início) nem em turmas já encerradas | MatriculaAlunoTurmaService | POST /matriculas |
+| R5 | Um aluno só pode ter uma matrícula ocupando vaga (`MATRICULADO` ou `ATIVO`) por vez | MatriculaAlunoTurmaService | POST /matriculas |
+| R6 | Um aluno não pode se matricular em outra turma do mesmo turno e período letivo | MatriculaAlunoTurmaService | POST /matriculas |
+| R7 | Matrícula `CONCLUIDO` não pode mudar de status; voltar a `MATRICULADO`/`ATIVO` exige vaga disponível na turma | MatriculaAlunoTurmaService | PATCH /matriculas/{id}/status |
 | C1 | Um curso só pode ser publicado depois de ter pelo menos um módulo e uma matéria | CursoService | PUT /cursos/{id} |
 | C2 | Um curso só pode ser arquivado depois de ter sido publicado | CursoService | PUT /cursos/{id} |
+| C3 | Não é possível remover a última matéria de um curso publicado | MateriaService | DELETE /materias/{id} |
+| C4 | Não é possível excluir um curso que possui módulos, nem um módulo que possui matérias ou turmas | CursoService e ModuloService | DELETE /cursos/{id} e DELETE /modulos/{id} |
 
 **Fora do escopo:**
 
-- O sistema não valida choque de horários ou ocupação por período (matutino/vespertino/noturno), pois a aplicação não faz o controle de cronograma de horários das aulas.
+- O sistema não controla o cronograma de horários das aulas (dias e horas). Só impede a matrícula em duas turmas do mesmo turno e período letivo (R6).
 - O sistema não irá bloquear a publicação ou abertura de um curso exigindo o cadastro do PPC (Projeto Pedagógico de Curso).
   
 ## Tecnologias
@@ -72,16 +77,20 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 **Mapa da estrutura.** Uma linha por entidade, todas as do modelo. Em cada célula, a classe e a situação: **pronta**, **implementada** (já tem lógica), **em parte** (só uma parte das rotas) ou **montada** (criada, ligada às outras, ainda sem lógica).
 
+> **Observações**: Foram só consideradas as migrations que criam entidades, as que realizam pequenas atualizações não foram incluidas.
+
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
 | Pessoa | `V1__criar_pessoa.sql`, pronta | `Pessoa`, pronta | `PessoaRepository`, pronta | *Não se aplica* | *Não se aplica* | *Não se aplica* | *Não se aplica* |
 | Aluno | `V2__criar_aluno.sql`, pronta | `Aluno`, pronta | `AlunoRepository`, pronta | `AlunoRequestDTO`, `AlunoResponseDTO`, pronta | `AlunoMapper`, pronta | `AlunoService`, pronta | `AlunoController`, pronta |
 | Professor | `V3__criar_professor.sql`, pronta | `Professor`, pronta | `ProfessorRepository`, pronta | `ProfessorRequestDTO`, `ProfessorResponseDTO`, pronta | `ProfessorMapper`, pronta | `ProfessorService`, pronta | `ProfessorController`, pronta |
 | Curso | `V4__criar_curso.sql` e `V9__garantir_slug_unico_curso.sql`, prontas | `Curso`, pronta | `CursoRepository`, pronto | `CursoRequestDTO`, `AtualizarCursoRequestDTO`, `CursoCompletoResponseDTO` e `CursoResponseDTO`, prontos | `CursoMapper`, pronto | `CursoService`, pronto | `CursoController`, pronto |
-| Modulo | `V5__criar_modulo.sql` e `V10__garantir_ordem_unica_modulo_por_curso.sql`, prontas | `Modulo`, pronto | `ModuloRepository`, pronto | `ModuloRequestDTO`, `AtualizarModuloDTO` e `ModuloResponse`, prontos | `ModuloMapper`, pronto | `ModuloService`, pronto | `ModuloController`, pronto |
+| Modulo | `V5__criar_modulo.sql` e `V10__garantir_ordem_unica_modulo_por_curso.sql`, prontas | `Modulo`, pronto | `ModuloRepository`, pronto | `ModuloRequestDTO`, `AtualizarModuloDTO`, `ModuloResponse` e `ModuloComMateriasResponseDTO`, prontos | `ModuloMapper`, pronto | `ModuloService`, pronto | `ModuloController`, pronto |
 | Materia | `V6__criar_materia.sql` e `V11__garantir_nome_unico_materia_por_modulo.sql`, prontas | `Materia`, pronta | `MateriaRepository`, pronto | `MateriaRequestDTO` e `MateriaResponse`, prontos | `MateriaMapper`, pronto | `MateriaService`, pronto | `MateriaController`, pronto |
 | Turma | `V7__criar_turma.sql`, pronta | `Turma`, pronta | `TurmaRepository`, pronta | `TurmaRequestDTO`, `AtualizarTurmaRequestDTO` e `TurmaResponseDTO`, pronta | `TurmaMapper`, pronta | `TurmaService`, pronta | `TurmaController`, pronta |
-| MatriculaAlunoTurma | `V8__criar_matricula_aluno_turma.sql`, pronta | `MatriculaAlunoTurma`, pronta | `MatriculaAlunoTurmaRepository`, pronta | `MatriculaAlunoTurmaRequestDTO` e `TurmaResponseDTO`, pronta | `MatriculaAlunoTurmaMapper`, pronta | `MatriculaAlunoTurmaService`, pronta | `MatriculaAlunoTurmaController`, pronta |
+| MatriculaAlunoTurma | `V8__criar_matricula_aluno_turma.sql`, pronta | `MatriculaAlunoTurma`, pronta | `MatriculaAlunoTurmaRepository`, pronta | `MatricularAlunoRequestDTO`, `MatricularAlunoResponseDTO`, `AtualizarStatusMatriculaDTO` e `MatriculaAlunoTurmaResponseDTO`, pronta | `MatriculaAlunoTurmaMapper`, pronta | `MatriculaAlunoTurmaService`, pronta | `MatriculaAlunoTurmaController`, pronta |
+
+Classes compartilhadas: `PageResponse` e `PageMapper` (listas paginadas), `ErroDTO`, `CampoErroDTO` e `ApiExceptionHandler` (erros), `RecursoNaoEncontradoException` e `RegraDeNegocioException` (exceções base do Service).
 
 
 ## Entidades
@@ -105,6 +114,7 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 
 ### As que já funcionam
 
+As listas de alunos, professores, turmas e matrículas são paginadas (`page`, `size`, `sort`; padrão `0`, `20` e `id`).
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
@@ -112,12 +122,28 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 | `GET` | `/cursos/{identificador}` | Busca curso por id ou slug, com módulos e matérias | Nenhuma | `200` | `404` |
 | `POST` | `/cursos` | Cria curso em rascunho | — | `201` | `400` |
 | `PUT` | `/cursos/{id}` | Atualiza curso ou muda status | C1, C2 | `200` | `400`, `404` |
-| `DELETE` | `/cursos/{id}` | Remove curso sem módulos | Nenhuma | `204` | `400`, `404` |
-| `POST` | `/modulos` | Adiciona módulo a um curso | — | `201` | `400` |
+| `DELETE` | `/cursos/{id}` | Remove curso sem módulos | C4 | `204` | `400`, `404` |
+| `POST` | `/modulos` | Adiciona módulo a um curso | — | `201` | `400`, `404` |
 | `PUT` | `/modulos/{id}` | Atualiza módulo | — | `200` | `400`, `404` |
-| `DELETE` | `/modulos/{id}` | Remove módulo sem matérias ou turmas | — | `204` | `400`, `404` |
-| `POST` | `/materias` | Adiciona matéria a um módulo | — | `201` | `400` |
-| `DELETE` | `/materias/{id}` | Remove matéria; não remove a última de curso publicado | — | `204` | `400`, `404` |
+| `DELETE` | `/modulos/{id}` | Remove módulo sem matérias ou turmas | C4 | `204` | `400`, `404` |
+| `POST` | `/materias` | Adiciona matéria a um módulo | — | `201` | `400`, `404` |
+| `DELETE` | `/materias/{id}` | Remove matéria; não remove a última de curso publicado | C3 | `204` | `400`, `404` |
+| `POST` | `/turmas` | Cria turma | — | `201` | `400`, `404` |
+| `GET` | `/turmas` | Lista turmas (paginado) | Nenhuma | `200` | — |
+| `GET` | `/turmas/{id}` | Busca turma por id | Nenhuma | `200` | `404` |
+| `PATCH` | `/turmas/{id}` | Atualiza professor, vagas e datas da turma | — | `200` | `400`, `404` |
+| `DELETE` | `/turmas/{id}` | Remove turma | — | `204` | `404` |
+| `POST` | `/matriculas` | Matricula aluno em um curso (a API escolhe a turma aberta) | R1, R2, R3, R4, R5, R6 | `201` | `400`, `404` |
+| `GET` | `/matriculas` | Lista matrículas (paginado) | Nenhuma | `200` | — |
+| `GET` | `/matriculas/{id}` | Busca matrícula por id | Nenhuma | `200` | `404` |
+| `PATCH` | `/matriculas/{id}/status` | Altera o status da matrícula | R7 | `200` | `400`, `404` |
+| `DELETE` | `/matriculas/{id}` | Remove matrícula | — | `204` | `404` |
+| `POST` | `/alunos` | Cadastra aluno (cria a pessoa se não existir) e gera a matrícula global | — | `200` | `400` |
+| `GET` | `/alunos` | Lista alunos (paginado) | Nenhuma | `200` | — |
+| `GET` | `/alunos/{id}` | Busca aluno por id | Nenhuma | `200` | `404` |
+| `POST` | `/professores` | Cadastra professor (cria a pessoa se não existir) | — | `200` | `400` |
+| `GET` | `/professores` | Lista professores (paginado) | Nenhuma | `200` | — |
+| `GET` | `/professores/{id}` | Busca professor por id | Nenhuma | `200` | `404` |
 
 Exemplo de criação de curso:
 
@@ -153,7 +179,7 @@ Todo erro sai no mesmo formato. Este é o `400` de uma regra de negócio violada
 {
   "status": 400,
   "erro": "Bad Request",
-  "mensagem": "R1: Um aluno não pode se matricular em uma turma que já esta cursando.",
+  "mensagem": "O aluno já está matriculado em outra turma ativa.",
   "caminho": "/matriculas",
   "timestamp": "2026-10-06T19:30:00",
   "campos": []
