@@ -3,6 +3,7 @@ package api.service;
 import api.dto.MateriaRequestDTO;
 import api.dto.MateriaResponse;
 import api.mapper.MateriaMapper;
+import api.model.Curso;
 import api.model.Materia;
 import api.model.Modulo;
 import api.repository.MateriaRepository;
@@ -53,7 +54,14 @@ public class MateriaService {
 
     @Transactional
     public void excluir(Long id) {
-        materiaRepository.delete(buscarMateria(id));
+        Materia materia = buscarMateria(id);
+        Curso curso = materia.getModulo().getCurso();
+        if (curso.getStatus() == Curso.enumStatusCurso.PUBLICADO
+                && materiaRepository.countByModulo_Curso_Id(curso.getId()) == 1) {
+            throw new RegraDeNegocioException(
+                    "Não é possível remover a última matéria de um curso publicado.");
+        }
+        materiaRepository.delete(materia);
     }
 
     private Materia buscarMateria(Long id) {

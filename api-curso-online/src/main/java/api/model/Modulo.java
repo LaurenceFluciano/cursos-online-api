@@ -12,7 +12,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "modulo",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"id_curso", "ordem"}))
+    uniqueConstraints = @UniqueConstraint(name = "uq_modulo_curso_ordem", columnNames = {"id_curso", "ordem"}))
 public class Modulo {
 
     @Id

@@ -14,4 +14,8 @@ public interface MateriaRepository extends JpaRepository<Materia, Long> {
     boolean existsByModulo_Id(Long moduloId);
 
     boolean existsByModulo_IdAndNome(Long moduloId, String nome);
+
+    boolean existsByModulo_Curso_Id(Long cursoId);
+
+    long countByModulo_Curso_Id(Long cursoId);
 }

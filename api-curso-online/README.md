@@ -57,6 +57,8 @@ No ponto de vista do estudante, a possibilidade de poder estudar mesmo morando l
 | R2 | Um aluno não pode se matricular em uma turma em caso de exceder o número de vagas | MatriculaService | POST /matriculas |
 | R3 | Um professor não pode ser aluno da turma que esta dando aula | MatriculaService | POST /matriculas/ |
 | R4 | Um aluno não pode se matricular em turmas que estão em período de planejamento | MatriculaService | POST /matriculas |
+| C1 | Um curso só pode ser publicado depois de ter pelo menos um módulo e uma matéria | CursoService | PUT /cursos/{id} |
+| C2 | Um curso só pode ser arquivado depois de ter sido publicado | CursoService | PUT /cursos/{id} |
 
 **Fora do escopo:**
 
@@ -86,9 +88,9 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 | Pessoa | `V1__criar_pessoa.sql`, pronta | `Pessoa`, pronta | `PessoaRepository`, pronta | *Não se aplica* | *Não se aplica* | *Não se aplica* | *Não se aplica* |
 | Aluno | `V2__criar_aluno.sql`, pronta | `Aluno`, pronta | `AlunoRepository`, pronta | `AlunoRequestDTO`, `AlunoResponseDTO`, pronta | `AlunoMapper`, pronta | `AlunoService`, pronta | `AlunoController`, pronta |
 | Professor | `V3__criar_professor.sql`, pronta | `Professor`, pronta | `ProfessorRepository`, pronta | `ProfessorRequestDTO`, `ProfessorResponseDTO`, pronta | `ProfessorMapper`, pronta | `ProfessorService`, pronta | `ProfessorController`, pronta |
-| Curso | `V4__criar_curso.sql`, pronta | `Curso`, pronta | `CursoRepository`, pronta | `CursoRequestDTO`, `AtualizarCursoRequestDTO`, `CursoCompletoResponseDTO` e `CursoResponseDTO`, pronta | `CursoMapper`, pronta | `CursoService`, pronta | `CursoController`, pronta |
-| Modulo | `V5__criar_modulo.sql`, pronta | `Modulo`, pronta | `ModuloRepository`, pronta | `ModuloRequestDTO`, `AtualizarModuloRequestDTO` e `ModuloResponseDTO`, pronta | `ModuloMapper`, pronta | `ModuloService`, pronta | `ModuloController`, pronta |
-| Materia | `V6__criar_materia.sql`, pronta | `Materia`, pronta | `MateriaRepository`, pronta | `MateriaRequestDTO` e `MateriaResponseDTO`, pronta | `MateriaMapper`, pronta | `MateriaService`, pronta | `MateriaController`, pronta |
+| Curso | `V4__criar_curso.sql` e `V9__garantir_slug_unico_curso.sql`, prontas | `Curso`, pronta | `CursoRepository`, pronto | `CursoRequestDTO`, `AtualizarCursoRequestDTO`, `CursoCompletoResponseDTO` e `CursoResponseDTO`, prontos | `CursoMapper`, pronto | `CursoService`, pronto | `CursoController`, pronto |
+| Modulo | `V5__criar_modulo.sql` e `V10__garantir_ordem_unica_modulo_por_curso.sql`, prontas | `Modulo`, pronto | `ModuloRepository`, pronto | `ModuloRequestDTO`, `AtualizarModuloDTO` e `ModuloResponse`, prontos | `ModuloMapper`, pronto | `ModuloService`, pronto | `ModuloController`, pronto |
+| Materia | `V6__criar_materia.sql` e `V11__garantir_nome_unico_materia_por_modulo.sql`, prontas | `Materia`, pronta | `MateriaRepository`, pronto | `MateriaRequestDTO` e `MateriaResponse`, prontos | `MateriaMapper`, pronto | `MateriaService`, pronto | `MateriaController`, pronto |
 | Turma | `V7__criar_turma.sql`, pronta | `Turma`, pronta | `TurmaRepository`, pronta | `TurmaRequestDTO`, `AtualizarTurmaRequestDTO` e `TurmaResponseDTO`, pronta | `TurmaMapper`, pronta | `TurmaService`, pronta | `TurmaController`, pronta |
 | MatriculaAlunoTurma | `V8__criar_matricula_aluno_turma.sql`, pronta | `MatriculaAlunoTurma`, pronta | `MatriculaAlunoTurmaRepository`, pronta | `MatriculaAlunoTurmaRequestDTO` e `TurmaResponseDTO`, pronta | `MatriculaAlunoTurmaMapper`, pronta | `MatriculaAlunoTurmaService`, pronta | `MatriculaAlunoTurmaController`, pronta |
 
@@ -117,19 +119,27 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
-| `POST` *(exemplo)* | `/livros` | Cadastra um livro | Nenhuma | `201` | `400` |
-| `POST` *(exemplo)* | `/emprestimos` | Registra um empréstimo | R1 e R2 | `201` | `400`, `404` |
-| ... | ... | ... | ... | ... | ... |
+| `GET` | `/cursos` | Lista cursos | Nenhuma | `200` | — |
+| `GET` | `/cursos/{identificador}` | Busca curso por id ou slug, com módulos e matérias | Nenhuma | `200` | `404` |
+| `POST` | `/cursos` | Cria curso em rascunho | — | `201` | `400` |
+| `PUT` | `/cursos/{id}` | Atualiza curso ou muda status | C1, C2 | `200` | `400`, `404` |
+| `DELETE` | `/cursos/{id}` | Remove curso sem módulos | Nenhuma | `204` | `400`, `404` |
+| `POST` | `/modulos` | Adiciona módulo a um curso | — | `201` | `400` |
+| `PUT` | `/modulos/{id}` | Atualiza módulo | — | `200` | `400`, `404` |
+| `DELETE` | `/modulos/{id}` | Remove módulo sem matérias ou turmas | — | `204` | `400`, `404` |
+| `POST` | `/materias` | Adiciona matéria a um módulo | — | `201` | `400` |
+| `DELETE` | `/materias/{id}` | Remove matéria; não remove a última de curso publicado | — | `204` | `400`, `404` |
 
-Exemplo de requisição *(exemplo: troque por uma rota do grupo)*:
+Exemplo de criação de curso:
 
 ```http
-POST /livros
+POST /cursos
 Content-Type: application/json
 
 {
-  "titulo": "Dom Casmurro",
-  "isbn": "978-85-359-0277-5"
+  "titulo": "Desenvolvimento Backend",
+  "slug": "desenvolvimento-backend",
+  "status": "RASCUNHO"
 }
 ```
 
@@ -138,9 +148,11 @@ Resposta, `201 Created`:
 ```json
 {
   "id": 1,
-  "titulo": "Dom Casmurro",
-  "isbn": "978-85-359-0277-5",
-  "disponivel": true
+  "titulo": "Desenvolvimento Backend",
+  "subtitulo": null,
+  "resumo": null,
+  "slug": "desenvolvimento-backend",
+  "status": "RASCUNHO"
 }
 ```
 
@@ -200,7 +212,7 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 |---|---|
 | Desenho | completo: as regras de negócio, contratos e modelagem estão todas definidas nesse readme |
 | Estrutura | Todas as entidades têm migration, entidades, Repository, DTOs, Mapper, Service e Controller. |
-| API e regras | Todas as rotas documentadas funcionam; As regras R1, R2, R3 e R4 estão implementadas}} |
+| API e regras | Todas as rotas documentadas funcionam; Todas as regras foram implementadas |
 
 ## Documentação
 
