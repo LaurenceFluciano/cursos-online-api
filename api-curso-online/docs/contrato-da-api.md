@@ -59,7 +59,7 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa: as da AP
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |--------|---------------|--------------------------------|-----------------------------|------------------------------|-------|-------|-----|
-| `POST` | `/matriculas` | Matricula um aluno em uma turma| `MatricularAlunoRequestDTO` | `MatricularAlunoResponseDTO` | `201` | `400` | não |
+| `POST` | `/matriculas` | Matricula um aluno em um curso e turma | `MatricularAlunoRequestDTO` | `MatricularAlunoResponseDTO` | `201` | `400` | não |
 
 ### Alunos
 
@@ -83,7 +83,7 @@ As que nascem das regras de negócio do README. Estas precisam funcionar nesta e
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
 |---|---|---|---|---|---|
-| `POST` | `/matriculas` | Matricula um aluno em uma turma automaticamente | R1, R2, R3, R4 e R5 | `201` | `400` |
+| `POST` | `/matriculas` | Matricula um aluno em uma turma e curso automaticamente | R1, R2, R3, R4 e R5 | `201` | `400` |
 | ... | ... | ... | ... | ... | ... |
 
 ## DTOs
@@ -135,8 +135,8 @@ O que entra não é igual ao que sai: o cliente não envia `id` nem campos que a
 
 | DTO | Direção | Campos | Validações |
 |---|---|---|---|
-| `MatricularAlunoRequestDTO` | Entrada (`POST`) | `idAluno` (Long), `idTurma` (Long) | `idAluno`, `idTurma`: obrigatórios. O sistema valida se existem vagas disponíveis na turma antes de confirmar. |
-| `MatricularAlunoResponseDTO` | Saída | `idMatricula` (Long), `idAluno` (Long), `idTurma` (Long), `dataMatricula` (Timestamp), `status` (String) | Retorna o ID do vínculo criado, a data gerada automaticamente e o status inicial (`Matriculado`/`Ativo`). |
+| `MatricularAlunoRequestDTO` | Entrada (`POST`) | `idAluno` (Long), `idCurso` (Long) | `idAluno`, `idCurso`: obrigatórios. O sistema valida se existem vagas disponíveis na turma antes de confirmar. |
+| `MatricularAlunoResponseDTO` | Saída | `idMatricula` (Long), `idAluno` (Long), `idCurso` (Long), `dataMatricula` (Timestamp), `status` (String), `idTurma` (Long) | Retorna o ID do vínculo criado, a data gerada automaticamente e o status inicial (`Matriculado`/`Ativo`). |
 
 ---
 
