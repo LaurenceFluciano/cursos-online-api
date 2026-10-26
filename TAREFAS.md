@@ -42,7 +42,7 @@
 
 ### Implementação na camada de Services
 
-- [  ] Implementar AlunoService - Laurence
+- [ x ] Implementar AlunoService - Laurence
 - [  ] Implementar ProfessorService - Laurence
 - [  ] Implementar MatriculaService - Igor
 - [  ] Implementar TurmaService - Igor
@@ -52,7 +52,7 @@
 
 ### Implementação na camada de Controller
 
-- [  ] Implementar AlunoController - Laurence
+- [ x ] Implementar AlunoController - Laurence
 - [  ] Implementar ProfessorController - Laurence
 - [  ] Implementar MatriculaController - Igor
 - [  ] Implementar TurmaController - Igor

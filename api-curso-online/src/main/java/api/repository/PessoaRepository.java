@@ -8,5 +8,5 @@ import api.model.Pessoa;
 
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
  
-    Optional<Pessoa> findByCpf(String cpf);
+    Optional<Pessoa> findByCpfOrEmail(String cpf, String email);
 }
