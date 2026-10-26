@@ -43,6 +43,10 @@ public class CursoService {
         if (cursoRepository.existsBySlug(request.slug())) {
             throw new RegraDeNegocioException("Já existe um curso com o slug: " + request.slug());
         }
+        if (request.status() != Curso.enumStatusCurso.RASCUNHO) {
+            throw new RegraDeNegocioException(
+                    "Um curso deve ser criado como RASCUNHO e só pode mudar de status depois de cadastrado.");
+        }
 
         Curso curso = mapper.toEntity(request);
         return mapper.toResponse(cursoRepository.save(curso));
@@ -65,12 +69,22 @@ public class CursoService {
         return montarRespostaCompleta(curso);
     }
 
+    @Transactional(readOnly = true)
+    public CursoCompletoResponseDTO buscarPorIdentificador(String identificador) {
+        try {
+            return buscarPorId(Long.valueOf(identificador));
+        } catch (NumberFormatException | CursoNaoEncontradoException excecao) {
+            return buscarPorSlug(identificador);
+        }
+    }
+
     @Transactional
     public CursoResponseDTO atualizar(Long id, AtualizarCursoRequestDTO request) {
         Curso curso = buscarCurso(id);
         if (request.slug() != null && cursoRepository.existsBySlugAndIdNot(request.slug(), id)) {
             throw new RegraDeNegocioException("Já existe um curso com o slug: " + request.slug());
         }
+        validarMudancaDeStatus(curso, request.status());
 
         mapper.updateEntity(curso, request);
         return mapper.toResponse(cursoRepository.save(curso));
@@ -88,6 +102,24 @@ public class CursoService {
     private Curso buscarCurso(Long id) {
         return cursoRepository.findById(id)
                 .orElseThrow(() -> new CursoNaoEncontradoException(id));
+    }
+
+    private void validarMudancaDeStatus(Curso curso, Curso.enumStatusCurso novoStatus) {
+        if (novoStatus == null || novoStatus == curso.getStatus()) {
+            return;
+        }
+        if (novoStatus == Curso.enumStatusCurso.PUBLICADO) {
+            boolean possuiModulo = moduloRepository.existsByCurso_Id(curso.getId());
+            boolean possuiMateria = materiaRepository.existsByModulo_Curso_Id(curso.getId());
+            if (!possuiModulo || !possuiMateria) {
+                throw new RegraDeNegocioException(
+                        "Um curso só pode ser publicado quando tiver pelo menos um módulo e uma matéria.");
+            }
+        }
+        if (novoStatus == Curso.enumStatusCurso.ARQUIVADO
+                && curso.getStatus() != Curso.enumStatusCurso.PUBLICADO) {
+            throw new RegraDeNegocioException("Um curso só pode ser arquivado depois de ter sido publicado.");
+        }
     }
 
     private CursoCompletoResponseDTO montarRespostaCompleta(Curso curso) {

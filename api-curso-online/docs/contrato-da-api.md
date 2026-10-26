@@ -20,28 +20,29 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa: as da AP
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| `GET` | `/cursos` | Lista os cursos | Nenhuma | lista de `CursoResponseDTO` | `200` | Nenhum | não |
-| `GET` | `/cursos/{slug}` | Detalha um curso específico com seus módulos e matérias | Nenhuma | `CursoCompletoResponseDTO` | `200` | `404` | não |
-| `GET` | `/cursos/{id}` | Detalha um curso específico com seus módulos e matérias | Nenhuma | `CursoCompletoResponseDTO` | `200` | `404` | não |
-| `POST` | `/cursos` | Cadastra um novo curso | `CursoRequestDTO` | `CursoResponseDTO` | `201` | `400` | não |
-| `PUT` | `/cursos/{id}` | Atualiza os dados cadastrais de um curso | `AtualizarCursoRequestDTO` | `CursoResponseDTO` | `200` | `400`, `404` | não |
-| `DELETE` | `/cursos/{id}` | Remove um curso do catálogo | Nenhuma | Vazio | `204` | `400`, `404` | não |
+| `GET` | `/cursos` | Lista os cursos | Nenhuma | lista de `CursoResponseDTO` | `200` | Nenhum | sim |
+| `GET` | `/cursos/{identificador}` | Detalha por id ou slug, com módulos e matérias | Nenhuma | `CursoCompletoResponseDTO` | `200` | `404` | sim |
+| `POST` | `/cursos` | Cadastra um curso como rascunho | `CursoRequestDTO` | `CursoResponseDTO` | `201` | `400` | sim |
+| `PUT` | `/cursos/{id}` | Atualiza dados ou muda o status do curso | `AtualizarCursoRequestDTO` | `CursoResponseDTO` | `200` | `400`, `404` | sim |
+| `DELETE` | `/cursos/{id}` | Remove um curso sem módulos | Nenhuma | Vazio | `204` | `400`, `404` | sim |
+
+Regras de status: o curso deve ser criado como `RASCUNHO`. No `PUT`, só pode passar para `PUBLICADO` quando tiver pelo menos um módulo e uma matéria. Só pode passar para `ARQUIVADO` se o status atual for `PUBLICADO`. Violações retornam `400` com `ErroDTO`.
 
 ### Modulos
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| `POST` | `/modulos` | Adiciona um módulo a um curso | `ModuloRequestDTO` | `ModuloResponseDTO` | `201` | `400` | não |
-| `PUT` | `/modulos/{id}` | Atualiza os dados de um módulo | `AtualizarModuloDTO` | `ModuloResponseDTO` | `200` | `400`, `404` | não |
-| `DELETE` | `/modulos/{id}` | Remove um módulo | Nenhuma | Vazio | `204` | `400`, `404` | não |
+| `POST` | `/modulos` | Adiciona um módulo a um curso | `ModuloRequestDTO` | `ModuloResponse` | `201` | `400` | sim |
+| `PUT` | `/modulos/{id}` | Atualiza os dados de um módulo | `AtualizarModuloDTO` | `ModuloResponse` | `200` | `400`, `404` | sim |
+| `DELETE` | `/modulos/{id}` | Remove um módulo sem matérias ou turmas | Nenhuma | Vazio | `204` | `400`, `404` | sim |
 
 
 ### Materias
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
 |---|---|---|---|---|---|---|---|
-| `POST` | `/materias` | Adiciona uma matéria a um módulo | `MateriaRequestDTO` | `MateriaResponseDTO` | `201` | `400` | não |
-| `DELETE` | `/materias/{id}` | Remove uma matéria | Nenhuma | Vazio | `204` | `404` | não |
+| `POST` | `/materias` | Adiciona uma matéria a um módulo | `MateriaRequestDTO` | `MateriaResponse` | `201` | `400` | sim |
+| `DELETE` | `/materias/{id}` | Remove uma matéria | Nenhuma | Vazio | `204` | `400`, `404` | sim |
 
 
 ### Turmas 
@@ -95,7 +96,7 @@ O que entra não é igual ao que sai: o cliente não envia `id` nem campos que a
 
 | DTO | Direção | Campos | Validações |
 |---|---|---|---|
-| `CursoRequestDTO` | Entrada (`POST`) | `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (EnumStatusCurso) | `titulo`: obrigatório, de 2 a 128 caracteres.<br>`subtitulo`: opcional, de 2 a 255 caracteres.<br>`resumo`: opcional, de 16 a 1024 caracteres.<br>`slug`: obrigatório, único, de 2 a 128 caracteres, apenas alfanuméricos e '-'.<br>`status`: obrigatório, valores válidos: `RASCUNHO`, `PUBLICADO`, `ARQUIVADO`. |
+| `CursoRequestDTO` | Entrada (`POST`) | `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (EnumStatusCurso) | `titulo`: obrigatório, de 2 a 128 caracteres.<br>`subtitulo`: opcional, de 2 a 255 caracteres.<br>`resumo`: opcional, de 16 a 1024 caracteres.<br>`slug`: obrigatório, único, de 2 a 128 caracteres, apenas alfanuméricos e '-'.<br>`status`: obrigatório e deve ser `RASCUNHO` no cadastro. |
 | `AtualizarCursoRequestDTO` | Entrada (`PUT`) | `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (EnumStatusCurso) | Mesmas validações do `CursoRequestDTO`, mas aplicado para atualização parcial ou total. |
 | `CursoResponseDTO` | Saída | `id` (Long), `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (String) | Retorna os dados cadastrais básicos do curso. |
 | `CursoCompletoResponseDTO` | Saída | `id` (Long), `titulo` (String), `subtitulo` (String), `resumo` (String), `slug` (String), `status` (String), `modulos` (Lista de `ModuloComMateriasResponseDTO`) | Retorna a árvore pedagógica completa do curso (Módulos e suas respectivas Matérias aninhados). |
@@ -108,7 +109,7 @@ O que entra não é igual ao que sai: o cliente não envia `id` nem campos que a
 |---|---|---|---|
 | `ModuloRequestDTO` | Entrada (`POST`) | `idCurso` (Long), `nome` (String), `descricao` (String), `cargaHoraria` (Integer), `ordem` (Integer) | `idCurso`: obrigatório, deve ser um curso existente.<br>`nome`: obrigatório, de 2 a 128 caracteres.<br>`descricao`: opcional, de 16 a 1024 caracteres.<br>`cargaHoraria`: obrigatório, deve ser maior que zero.<br>`ordem`: obrigatório, deve ser maior que zero e único por curso. |
 | `AtualizarModuloDTO` | Entrada (`PUT`) | `nome` (String), `descricao` (String), `cargaHoraria` (Integer), `ordem` (Integer) | `nome`, `cargaHoraria`, `ordem`: obrigatórios se enviados, seguindo as mesmas restrições de validação de valor do cadastro. |
-| `ModuloResponseDTO` | Saída | `id` (Long), `idCurso` (Long), `nome` (String), `descricao` (String), `cargaHoraria` (Integer), `ordem` (Integer) | Retorna os dados básicos do módulo criado ou alterado. |
+| `ModuloResponse` | Saída | `id` (Long), `idCurso` (Long), `nome` (String), `descricao` (String), `cargaHoraria` (Integer), `ordem` (Integer) | Retorna os dados básicos do módulo criado ou alterado. |
 
 ---
 
@@ -117,7 +118,7 @@ O que entra não é igual ao que sai: o cliente não envia `id` nem campos que a
 | DTO | Direção | Campos | Validações |
 |---|---|---|---|
 | `MateriaRequestDTO` | Entrada (`POST`) | `idModulo` (Long), `nome` (String) | `idModulo`: obrigatório, deve ser um módulo existente.<br>`nome`: obrigatório, de 2 a 128 caracteres, único dentro do mesmo módulo. |
-| `MateriaResponseDTO` | Saída | `id` (Long), `idModulo` (Long), `nome` (String) | Retorna os dados básicos da matéria cadastrada. |
+| `MateriaResponse` | Saída | `id` (Long), `idModulo` (Long), `nome` (String) | Retorna os dados básicos da matéria cadastrada. |
 
 ---
 
@@ -171,7 +172,7 @@ Um par requisição/resposta por entidade.
   "subtitulo": "Formação completa em arquitetura de microsserviços e nuvem",
   "resumo": "Aprenda a construir APIs resilientes, escaláveis e prontas para produção utilizando Java, Spring Boot, Docker e os principais provedores de nuvem do mercado.",
   "slug": "desenvolvimento-backend-avancado",
-  "status": "PUBLICADO"
+  "status": "RASCUNHO"
 }
 ```
 
@@ -183,7 +184,7 @@ Um par requisição/resposta por entidade.
   "subtitulo": "Formação completa em arquitetura de microsserviços e nuvem",
   "resumo": "Aprenda a construir APIs resilientes, escaláveis e prontas para produção utilizando Java, Spring Boot, Docker e os principais provedores de nuvem do mercado.",
   "slug": "desenvolvimento-backend-avancado",
-  "status": "PUBLICADO"
+  "status": "RASCUNHO"
 }
 ```
 

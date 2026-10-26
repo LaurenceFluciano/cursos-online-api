@@ -113,8 +113,8 @@ Tabela de relacionamento de Aluno <-> Turma
 | **MatriculaAlunoTurma** | Turma | Muitos para Um (`M:1`) | `matriculas_alunos_turmas.id_turma` referência `turmas(id)` | `@ManyToOne` em `MatriculaAlunoTurma` |
 | **Aluno** | Pessoa | Um para Um (`1:1`) | `alunos.id_pessoa` referência `pessoas(id)` (Unique) | `@OneToOne` em `Aluno` |
 | **Professor** | Pessoa | Um para Um (`1:1`) | `professores.id_pessoa` referência `pessoas(id)` (Unique) | `@OneToOne` em `Professor` |
-| **Modulo** | Curso | Muitos para Um (`M:1`) | `modulos.id_curso` referência `cursos(id)` | `@ManyToOne` em `Modulo` |
-| **Materia** | Modulo | Muitos para Um (`M:1`) | `materias.id_modulo` referência `modulos(id)` | `@ManyToOne` em `Materia` |
+| **Modulo** | Curso | Muitos para Um (`M:1`) | `modulo.id_curso` referencia `curso(id)` | `@ManyToOne` em `Modulo` |
+| **Materia** | Modulo | Muitos para Um (`M:1`) | `materia.id_modulo` referencia `modulo(id)` | `@ManyToOne` em `Materia` |
 | **Turma** | Modulo | Muitos para Um (`M:1`) | `turmas.id_modulo` referência `modulos(id)` | `@ManyToOne` em `Turma` |
 | **Turma** | Professor | Muitos para Um (`M:1`) | `turmas.id_professor` referência `professores(id)` | `@ManyToOne` em `Turma` |
 
@@ -226,3 +226,6 @@ Todas existem em `src/main/resources/db/migration`, uma tabela por arquivo. A or
 | V6 | `V6__criar_materia.sql`                 | Tabela `materia`, com as uma chave estrangeira                    |
 | V7 | `V7__criar_turma.sql`                   | Tabela `turma`, com as duas chaves estrangeiras                   |
 | V8 | `V8__criar_matricula_aluno_turma.sql`   | Tabela `matricula_aluno_turma`, com as duas chaves estrangeiras   |
+| V9 | `V9__garantir_slug_unico_curso.sql` | Restrição de slug único em `curso` |
+| V10 | `V10__garantir_ordem_unica_modulo_por_curso.sql` | Restrição de ordem única por curso em `modulo` |
+| V11 | `V11__garantir_nome_unico_materia_por_modulo.sql` | Restrição de nome único por módulo em `materia` |
