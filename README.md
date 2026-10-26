@@ -76,8 +76,6 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 ### Componentes implementados
 
-> **Observações**: Foram só consideradas as migrations que criam entidades, as que realizam pequenas atualizações não foram incluidas.
-
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
 | Pessoa | `V1__criar_pessoa.sql`, pronta | `Pessoa`, pronta | `PessoaRepository`, pronta | *Não se aplica* | *Não se aplica* | *Não se aplica* | *Não se aplica* |
