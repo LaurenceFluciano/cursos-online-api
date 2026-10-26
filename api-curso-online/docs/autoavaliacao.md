@@ -17,8 +17,6 @@ Os 10 critérios que serão avaliados na revisão do código, descritos em `Aula
 | P7 No mínimo 3 regras de negócio implementadas, com `400` quando violadas | ✅ | `MatriculaAlunoTurmaService` (R1 a R7, rota `POST /matriculas` e `PATCH /matriculas/{id}/status`), `CursoService` (C1 e C2, rota `PUT /cursos/{id}`), `MateriaService` (C3, `DELETE /materias/{id}`) e `ModuloService`/`CursoService` (C4, `DELETE /modulos/{id}` e `DELETE /cursos/{id}`); todas lançam `RegraDeNegocioException` → `400` |
 | P8 As regras atendem ao problema e ao tema | ✅ | `README.md`, seção "O problema": as regras protegem a matrícula (vagas, duplicidade, professor, período da turma) e a integridade do catálogo de cursos a distância |
 | P9 Código igual ao desenho | ✅ | `docs/modelo-de-dominio.md` e `docs/contrato-da-api.md`, atualizados conforme o código (rotas, DTOs, enums, nomes de tabela e status HTTP). Conferir as migrations V1 a V11 contra o modelo antes de entregar. |
-| P10 README completo e bem escrito | ◐ | `README.md`. **Falta:** trocar `{{usuario}}/{{repositorio}}` no `git clone`, corrigir a tabela "Quem usa o sistema" (sem a linha separadora, não renderiza no GitHub), remover a nota "(deve ser completado...)", revisar erros de português e conferir a renderização no GitHub |
+| P10 README completo e bem escrito | ✅ | `README.md` |
 
-**Pontos que o grupo espera no projeto:** 4,5 (ajustar depois de fechar os itens ◐ de P5 e P10)
 
-A apresentação vale os outros 5,0 pontos: são 3 perguntas, feitas na Aula 11.
