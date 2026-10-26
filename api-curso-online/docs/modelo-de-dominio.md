@@ -16,18 +16,18 @@ Uma tabela por entidade. A coluna **Regra** é o que vira `NOT NULL`, `UNIQUE` o
 
 ### Aluno
 
-Um estudante pode se matricular em vários cursos
+Um estudante pode ter várias matrículas ao longo do tempo, mas só uma delas ocupando vaga (`MATRICULADO` ou `ATIVO`) por vez.
 
 | Atributo    | Tipo Java | Coluna      | Obrigatório | Regra                                    |
 |-------------|-----------|-------------|-------------|------------------------------------------|
 | `id`        | `Long`    | `id`        | sim         | Gerado pelo banco                        |
 | `pessoa`    | `Pessoa`  | `id_pessoa` | sim         | FK para pessoa                           |
-| `matricula` | `String`  | `matricula` | sim         | Gerado no cadastro, máximo 64 caracteres |
+| `matricula` | `String`  | `matricula` | sim         | Única, gerada no cadastro (ano + dígito do período + id da pessoa + 4 dígitos aleatórios), máximo 64 caracteres |
 
 
 ### Professor
 
-Professor de uma ou mais matérias
+Professor de uma ou mais turmas
 
 | Atributo    | Tipo Java | Coluna      | Obrigatório | Regra                           |
 |-------------|-----------|-------------|-------------|---------------------------------|
@@ -46,7 +46,7 @@ Um curso específico, pertence a uma instituição. Ele age como um catálogo.
 | `subtitulo`        | `String`          | `subtitulo`       | não         | Máximo 255 e no minimo 2 caracteres           |
 | `resumo`           | `String`          | `resumo`          | não         | Máximo 1024 e no minimo 16 caracteres         |
 | `slug`             | `String`          | `slug`            | sim         | Deve ser caracteres alfanuméricos e '-' como caracter especial apenas, deve ser único e tem no máximo 128 caracteres e no mínimo 2 caracteres      | 
-| `status`           | `EnumStatusCurso` | `status`          | sim         | Pode ser RASCUNHO, PUBLICADO e ARQUIVADO                          | 
+| `status`           | `Curso.enumStatusCurso` | `status`    | sim         | Enum aninhado em `Curso`, gravado como texto. Pode ser RASCUNHO, PUBLICADO e ARQUIVADO                          | 
 
 
 ## Módulo de um curso
@@ -60,7 +60,7 @@ Cada curso tem um módulo ou disciplina que será lecionadas no curso.
 | `nome`             | `String`          | `nome`            | sim         | Máximo 128 e no minimo 2 caracteres           |
 | `descricao`        | `String`          | `descricao`       | não         | Máximo 1024 e no minimo 16 caracteres         |
 | `cargaHoraria`     | `Int`             | `carga_horaria`   | sim         | Deve ser maior que zero                       |
-| `ordem`            | `Int`             | `ordem`           | sim         | Deve ser maior que zero e é unico com curso   |
+| `ordem`            | `Int`             | `ordem`           | sim         | Deve ser maior que zero e é unico com curso (`uq_modulo_curso_ordem`) |
 
 
 ## Matéria de um módulo
@@ -71,11 +71,11 @@ Cada módulo tem matérias obrigatórios que seram ensinadas.
 |--------------------|-------------------|-------------------|-------------|-----------------------------------------------|
 | `id`               | `Long`            | `id`              | sim         | Gerado pelo banco                             |
 | `modulo`           | `Modulo`          | `id_modulo`       | sim         | FK para `modulo`                              |
-| `nome`             | `String`          | `nome`            | sim         | Máximo 128 e no minimo 2 caracteres e unica com modulo |
+| `nome`             | `String`          | `nome`            | sim         | Máximo 128 e no minimo 2 caracteres e unica com modulo (`uq_materia_modulo_nome`) |
 
 ## Turma
 
-A turma representa efetivamente o acontecimento de um curso. Ela tem alunos, professores e materiais
+A turma representa efetivamente o acontecimento de um módulo em um período letivo. Ela tem alunos e professor. Para matricular, o aluno escolhe o curso e a API encontra a turma aberta dos módulos desse curso.
 
 
 | Atributo           | Tipo Java         | Coluna            | Obrigatório | Regra                                            |
@@ -83,12 +83,12 @@ A turma representa efetivamente o acontecimento de um curso. Ela tem alunos, pro
 | `id`               | `Long`            | `id`              | sim         | Gerado pelo banco                                |
 | `modulo`           | `Modulo`          | `id_modulo`       | sim         | FK para `modulo`                                 |
 | `professor`        | `Professor`       | `id_professor`    | sim         | FK para `professor`                              |
-| `periodoLetivo`    | `String`          | `periodo_letivo`  | sim         | Gerado automaticamente dentro do padrao `YYYY/p` |
-| `tipoPeriodo`      | `EnumTipoPeriodoTurma` | `tipo_periodo`    | sim         | Pode ser SEMESTRE, BIMESTRE, TRIMESTRE e QUADRIMESTRE |
+| `periodoLetivo`    | `String`          | `periodo_letivo`  | sim         | Gerado automaticamente dentro do padrao `YYYY/p`, até 10 caracteres. `p` = (mês de início - 1) / meses do período + 1 |
+| `tipoPeriodo`      | `EnumTipoPeriodoTurma` | `tipo_periodo`    | sim         | Pode ser BIMESTRE (2 meses), TRIMESTRE (3), QUADRIMESTRE (4) e SEMESTRE (6) |
 | `turno`            | `EnumTurnoTurma`  | `turno`           | sim         | Pode ser MATUTINO, VESPERTINO, NOTURNO e INTEGRAL |
-| `vagas`            | `Int`             | `vagas`           | sim         | Deve ser maior que zero                          |
-| `dataInicio`       | `Date`            | `dataInicio`      | não         | Tem que ser >= hoje                              |
-| `dataFim`          | `Date`            | `dataFim`         | não         | Tem que ser correspondente ao periodo            |
+| `vagas`            | `Integer`         | `vagas`           | sim         | Deve ser maior que zero                          |
+| `dataInicio`       | `LocalDate`       | `data_inicio`     | não         | Tem que ser >= hoje (no cadastro e na atualização). Turma sem data de início não é considerada aberta |
+| `dataFim`          | `LocalDate`       | `data_fim`        | não         | Exige `dataInicio`, deve ser posterior a ela e no máximo `dataInicio` + duração do período |
 
 
 ## Matricula Aluno Turma
@@ -98,10 +98,10 @@ Tabela de relacionamento de Aluno <-> Turma
 | Atributo   | Tipo Java | Coluna     | Obrigatório | Regra              |
 |------------|-----------|------------|-------------|--------------------|
 | `id`       | `Long`    | `id`       | sim         | Gerado pelo banco  |
-| `id_aluno` | `Long`    | `id_aluno` | sim         | FK para alunos     |
-| `id_turma` | `Long`    | `id_turma` | sim         | FK para `turma`    |
-| `dataMatricula` | `Date` | `data_matricula` | sim         | Gerada automaticamente     |
-| `status`    | `String` | `status`       | sim         | Pode ser `Ativo`, `Matriculado`, `Afastado`, `Trancado` e `Concluido` |
+| `aluno`    | `Aluno`   | `id_aluno` | sim         | FK para `aluno`    |
+| `turma`    | `Turma`   | `id_turma` | sim         | FK para `turma`    |
+| `dataMatricula` | `LocalDate` | `data_matricula` | sim         | Gerada automaticamente (data de hoje)     |
+| `status`    | `EnumStatusMatricula` | `status`       | sim         | Gravado como texto (até 20 caracteres). Pode ser `ATIVO`, `MATRICULADO`, `AFASTADO`, `TRANCADO` e `CONCLUIDO`. `MATRICULADO` e `ATIVO` ocupam vaga; nasce como `MATRICULADO`; `CONCLUIDO` não muda mais |
 
 
 
@@ -109,39 +109,39 @@ Tabela de relacionamento de Aluno <-> Turma
 
 | De (Origem) | Para (Destino) | Tipo de Relacionamento | No Banco de Dados (FK / Constraints) | No Código Java (JPA Annotation) |
 | :--- | :--- | :--- | :--- | :--- |
-| **MatriculaAlunoTurma** | Aluno | Muitos para Um (`M:1`) | `matriculas_alunos_turmas.id_aluno` referência `alunos(id)` | `@ManyToOne` em `MatriculaAlunoTurma` |
-| **MatriculaAlunoTurma** | Turma | Muitos para Um (`M:1`) | `matriculas_alunos_turmas.id_turma` referência `turmas(id)` | `@ManyToOne` em `MatriculaAlunoTurma` |
-| **Aluno** | Pessoa | Um para Um (`1:1`) | `alunos.id_pessoa` referência `pessoas(id)` (Unique) | `@OneToOne` em `Aluno` |
-| **Professor** | Pessoa | Um para Um (`1:1`) | `professores.id_pessoa` referência `pessoas(id)` (Unique) | `@OneToOne` em `Professor` |
+| **MatriculaAlunoTurma** | Aluno | Muitos para Um (`M:1`) | `matricula_aluno_turma.id_aluno` referência `aluno(id)` | `@ManyToOne` em `MatriculaAlunoTurma` |
+| **MatriculaAlunoTurma** | Turma | Muitos para Um (`M:1`) | `matricula_aluno_turma.id_turma` referência `turma(id)` | `@ManyToOne` em `MatriculaAlunoTurma` |
+| **Aluno** | Pessoa | Um para Um (`1:1`) | `aluno.id_pessoa` referência `pessoa(id)` | `@OneToOne` em `Aluno` |
+| **Professor** | Pessoa | Um para Um (`1:1`) | `professor.id_pessoa` referência `pessoa(id)` | `@OneToOne` em `Professor` |
 | **Modulo** | Curso | Muitos para Um (`M:1`) | `modulo.id_curso` referencia `curso(id)` | `@ManyToOne` em `Modulo` |
 | **Materia** | Modulo | Muitos para Um (`M:1`) | `materia.id_modulo` referencia `modulo(id)` | `@ManyToOne` em `Materia` |
-| **Turma** | Modulo | Muitos para Um (`M:1`) | `turmas.id_modulo` referência `modulos(id)` | `@ManyToOne` em `Turma` |
-| **Turma** | Professor | Muitos para Um (`M:1`) | `turmas.id_professor` referência `professores(id)` | `@ManyToOne` em `Turma` |
+| **Turma** | Modulo | Muitos para Um (`M:1`) | `turma.id_modulo` referência `modulo(id)` | `@ManyToOne` em `Turma` |
+| **Turma** | Professor | Muitos para Um (`M:1`) | `turma.id_professor` referência `professor(id)` | `@ManyToOne` em `Turma` |
 
 
 ## Diagrama ER
 
 ```mermaid
 erDiagram
-    pessoas {
+    pessoa {
         BIGINT id PK
         VARCHAR cpf UK
         VARCHAR email UK
         VARCHAR nome
     }
 
-    alunos {
+    aluno {
         BIGINT id PK
         BIGINT id_pessoa FK
         VARCHAR matricula UK
     }
 
-    professores {
+    professor {
         BIGINT id PK
         BIGINT id_pessoa FK
     }
 
-    cursos {
+    curso {
         BIGINT id PK
         VARCHAR titulo
         VARCHAR subtitulo
@@ -150,7 +150,7 @@ erDiagram
         VARCHAR status
     }
 
-    modulos {
+    modulo {
         BIGINT id PK
         BIGINT id_curso FK
         VARCHAR nome
@@ -159,13 +159,13 @@ erDiagram
         INTEGER ordem
     }
 
-    materias {
+    materia {
         BIGINT id PK
         BIGINT id_modulo FK
         VARCHAR nome
     }
 
-    turmas {
+    turma {
         BIGINT id PK
         BIGINT id_modulo FK
         BIGINT id_professor FK
@@ -185,14 +185,14 @@ erDiagram
         VARCHAR status
     }
 
-    pessoas ||--|| alunos : "torna-se"
-    pessoas ||--|| professores : "torna-se"
-    cursos ||--o{ modulos : "contem"
-    modulos ||--o{ materias : "possui"
-    modulos ||--o{ turmas : "oferta"
-    professores ||--o{ turmas : "rege"
-    alunos ||--o{ matricula_aluno_turma : "realiza"
-    turmas ||--o{ matricula_aluno_turma : "recebe"
+    pessoa ||--|| aluno : "torna-se"
+    pessoa ||--|| professor : "torna-se"
+    curso ||--o{ modulo : "contem"
+    modulo ||--o{ materia : "possui"
+    modulo ||--o{ turma : "oferta"
+    professor ||--o{ turma : "rege"
+    aluno ||--o{ matricula_aluno_turma : "realiza"
+    turma ||--o{ matricula_aluno_turma : "recebe"
 
 ```
 
@@ -202,7 +202,7 @@ Como ler:
 - `||--||` é "um para um". Uma pessoa torna-se um aluno (ou professor), e cada aluno (ou professor) pertence a exatamente uma pessoa.
 
 
-> Observações Importantes: Aluno e professor tem uma chave PK incremental e não é UK com pessoa, uma vez que em caso de troca de matricula de um aluno é possível manter o histórico de uma turma passada cuja sua matricula era diferente da atual.
+> Observações Importantes: Aluno e professor tem uma chave PK incremental e não é UK com pessoa, uma vez que em caso de troca de matricula de um aluno é possível manter o histórico de uma turma passada cuja sua matricula era diferente da atual. A regra de "uma pessoa só pode ser um aluno (ou um professor)" é garantida pelo Service no cadastro.
 
 Prova-se tal ponto com esses casos:
 
