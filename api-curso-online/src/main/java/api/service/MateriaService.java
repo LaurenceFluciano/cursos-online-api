@@ -13,7 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
+// CAMADA: Service
+// RESPONSABILIDADE: regras de negócio dos materias.
+// REGRAS: C3
+// ROTAS ATENDIDAS: as de /materias/{id}  em docs/contrato-da-api.md.
+// SITUAÇÃO: montada. A lógica entra quando a rota for implementada.
 @Service
 public class MateriaService {
 
